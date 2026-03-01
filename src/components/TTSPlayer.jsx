@@ -111,19 +111,8 @@ export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundar
       <div className="flex-1 px-2">
         <div className="flex items-center justify-between mb-2">
           <div className="text-sm font-bold tracking-wider text-slate-200">ARTICLE AUDIO</div>
-          <div className="flex bg-slate-800 rounded-md p-0.5 border border-slate-700">
-            <button 
-              onClick={() => { setAccent('US'); stop(); }} 
-              className={`text-[10px] px-2 py-0.5 rounded font-bold transition-colors ${accent === 'US' ? 'bg-[#3b82f6] text-white' : 'text-slate-400 hover:text-white'}`}
-            >
-              US
-            </button>
-            <button 
-              onClick={() => { setAccent('UK'); stop(); }} 
-              className={`text-[10px] px-2 py-0.5 rounded font-bold transition-colors ${accent === 'UK' ? 'bg-[#3b82f6] text-white' : 'text-slate-400 hover:text-white'}`}
-            >
-              UK
-            </button>
+          <div className="flex bg-slate-800 rounded-md px-2 py-0.5 border border-slate-700">
+            <span className="text-[10px] text-emerald-400 font-bold">OpenAI Voice</span>
           </div>
         </div>
         <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
@@ -134,7 +123,11 @@ export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundar
         </div>
       </div>
       <div className="flex items-center gap-1">
-        {isPlaying ? (
+        {isLoading ? (
+          <Button variant="ghost" size="icon" disabled className="text-slate-400 rounded-full w-10 h-10">
+            <Loader2 className="w-5 h-5 animate-spin" />
+          </Button>
+        ) : isPlaying ? (
           <Button variant="ghost" size="icon" onClick={pause} className="text-white hover:text-[#3b82f6] hover:bg-white/10 rounded-full w-10 h-10">
             <Pause className="w-5 h-5" fill="currentColor" />
           </Button>
