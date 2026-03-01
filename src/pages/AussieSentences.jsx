@@ -14,7 +14,10 @@ export default function AussieSentences() {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     const voices = window.speechSynthesis.getVoices();
-    const auVoice = voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && (v.name.includes('Neural') || v.name.includes('Natural') || v.name.includes('Online')))
+    const isMale = (name) => name.includes('Male') || name.includes('Gordon') || name.includes('Russell') || name.includes('William') || name.includes('James') || name.includes('Neil') || name.includes('Mac');
+    const auVoice = voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && isMale(v.name) && (v.name.includes('Neural') || v.name.includes('Natural') || v.name.includes('Online')))
+                 || voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && isMale(v.name))
+                 || voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && (v.name.includes('Neural') || v.name.includes('Natural')))
                  || voices.find(v => v.lang === 'en-AU' || v.lang === 'en_AU')
                  || voices.find(v => v.lang.startsWith('en'));
     if (auVoice) utterance.voice = auVoice;
