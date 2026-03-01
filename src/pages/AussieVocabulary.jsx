@@ -1,28 +1,38 @@
 import React from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Volume2 } from 'lucide-react';
+import { Volume2, Loader2 } from 'lucide-react';
+
+let currentAudio = null;
 
 export default function AussieVocabulary() {
+  const [loadingText, setLoadingText] = React.useState(null);
+
   const { data: vocab, isLoading } = useQuery({
     queryKey: ['aussie_vocab'],
     queryFn: () => base44.entities.AussieVocabulary.list(),
     initialData: []
   });
 
-  const playAudio = (text) => {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    const isMale = (name) => name.includes('Male') || name.includes('Gordon') || name.includes('Russell') || name.includes('William') || name.includes('James') || name.includes('Neil') || name.includes('Mac');
-    const auVoice = voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && isMale(v.name) && (v.name.includes('Neural') || v.name.includes('Natural') || v.name.includes('Online')))
-                 || voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && isMale(v.name))
-                 || voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && (v.name.includes('Neural') || v.name.includes('Natural')))
-                 || voices.find(v => v.lang === 'en-AU' || v.lang === 'en_AU')
-                 || voices.find(v => v.lang.startsWith('en'));
-    if (auVoice) utterance.voice = auVoice;
-    utterance.rate = 0.9;
-    window.speechSynthesis.speak(utterance);
+  const playAudio = async (text) => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio = null;
+    }
+    
+    setLoadingText(text);
+    try {
+      const res = await base44.functions.invoke('generateAudio', { text });
+      if (res.data && res.data.audio) {
+        currentAudio = new Audio(res.data.audio);
+        currentAudio.play();
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Failed to load audio. Please check your OpenAI API key.');
+    } finally {
+      setLoadingText(null);
+    }
   };
 
   return (
@@ -40,8 +50,8 @@ export default function AussieVocabulary() {
               <div>
                 <div className="flex items-end gap-3 mb-1">
                   <h3 className="text-2xl font-bold text-[#1e293b]">{item.word}</h3>
-                  <button onClick={() => playAudio(item.word)} className="text-slate-400 hover:text-[#00843D] mb-1 transition-colors">
-                    <Volume2 className="w-5 h-5" />
+                  <button onClick={() => playAudio(item.word)} disabled={loadingText === item.word} className="text-slate-400 hover:text-[#00843D] mb-1 transition-colors">
+                    {loadingText === item.word ? <Loader2 className="w-5 h-5 animate-spin" /> : <Volume2 className="w-5 h-5" />}
                   </button>
                 </div>
                 <div className="flex items-center gap-2 text-sm">
@@ -57,7 +67,11 @@ export default function AussieVocabulary() {
               <button onClick={() => playAudio(item.example_en)} className="text-left group w-full">
                 <p className="text-slate-900 font-medium italic mb-1 group-hover:text-blue-700 transition-colors flex justify-between gap-4">
                   <span>"{item.example_en}"</span>
-                  <Volume2 className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 shrink-0 mt-0.5" />
+                  {loadingText === item.example_en ? (
+                    <Loader2 className="w-4 h-4 text-blue-400 animate-spin shrink-0 mt-0.5" />
+                  ) : (
+                    <Volume2 className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 shrink-0 mt-0.5" />
+                  )}
                 </p>
                 <p className="text-sm text-slate-600">{item.example_zh}</p>
               </button>
