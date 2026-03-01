@@ -1,39 +1,41 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { Play, Pause, Square } from "lucide-react";
+import { Play, Pause, Square, Loader2 } from "lucide-react";
+import { base44 } from '@/api/base44Client';
 
 export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundary }) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [accent, setAccent] = useState('US'); // 'US' or 'UK'
-  const synthRef = useRef(window.speechSynthesis);
+  const audioRef = useRef(null);
 
   useEffect(() => {
-    // Ensure voices are loaded early in some browsers
-    if (synthRef.current && synthRef.current.getVoices().length === 0) {
-      synthRef.current.onvoiceschanged = () => {};
-    }
     return () => {
-      if (synthRef.current) synthRef.current.cancel();
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
     };
   }, []);
 
   const play = () => {
-    if (synthRef.current.speaking && synthRef.current.paused) {
-      synthRef.current.resume();
+    if (audioRef.current && audioRef.current.paused && audioRef.current.src) {
+      audioRef.current.play();
       setIsPlaying(true);
       return;
     }
 
     if (!paragraphs || paragraphs.length === 0) return;
 
-    synthRef.current.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
     
     let startIndex = currentIndex === -1 ? 0 : currentIndex;
     speakParagraph(startIndex);
   };
 
-  const speakParagraph = (index) => {
+  const speakParagraph = async (index) => {
     if (index >= paragraphs.length) {
       setIsPlaying(false);
       setCurrentIndex(-1);
@@ -43,61 +45,55 @@ export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundar
 
     setCurrentIndex(index);
     onParagraphChange(index);
-    setIsPlaying(true);
-
+    
     const textToSpeak = paragraphs[index].en;
     if (!textToSpeak) {
       speakParagraph(index + 1);
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    
-    // Prioritize high-quality natural/neural voices based on selected accent
-    const voices = synthRef.current.getVoices();
-    const isTargetAccent = (v) => accent === 'US' 
-      ? (v.lang === 'en-US' || v.lang === 'en_US')
-      : (v.lang === 'en-GB' || v.lang === 'en_GB');
-    
-    const isMale = (name) => name.includes('Male') || name.includes('Gordon') || name.includes('Russell') || name.includes('William') || name.includes('James') || name.includes('Neil') || name.includes('Mac');
-    
-    const bestVoice = voices.find(v => isTargetAccent(v) && isMale(v.name) && (v.name.includes('Online') || v.name.includes('Neural') || v.name.includes('Premium'))) 
-                 || voices.find(v => isTargetAccent(v) && isMale(v.name) && (v.name.includes('Google') || v.name.includes('Daniel') || v.name.includes('Natural')))
-                 || voices.find(v => isTargetAccent(v) && isMale(v.name))
-                 || voices.find(v => isTargetAccent(v));
-                 
-    if (bestVoice) utterance.voice = bestVoice;
-    
-    // Slightly slower reading pace for language learning
-    utterance.rate = 0.9;
-    
-    utterance.onboundary = (e) => {
-      if (e.name === 'word') {
-        if (onWordBoundary) onWordBoundary(e.charIndex, e.charLength);
+    setIsLoading(true);
+    try {
+      const res = await base44.functions.invoke('generateAudio', { text: textToSpeak });
+      setIsLoading(false);
+      if (res.data && res.data.audio) {
+        const audio = new Audio(res.data.audio);
+        audioRef.current = audio;
+        setIsPlaying(true);
+        
+        audio.onended = () => {
+          if (onWordBoundary) onWordBoundary(-1, 0);
+          speakParagraph(index + 1);
+        };
+
+        audio.onerror = (e) => {
+          console.error("Audio playback error", e);
+          setIsPlaying(false);
+        };
+
+        audio.play();
       }
-    };
-    
-    utterance.onend = () => {
-      if (onWordBoundary) onWordBoundary(-1, 0);
-      speakParagraph(index + 1);
-    };
-
-    utterance.onerror = (e) => {
-      console.error("Speech error", e);
+    } catch(e) {
+      console.error(e);
+      setIsLoading(false);
       setIsPlaying(false);
-    };
-
-    synthRef.current.speak(utterance);
+    }
   };
 
   const pause = () => {
-    synthRef.current.pause();
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
     setIsPlaying(false);
   };
 
   const stop = () => {
-    synthRef.current.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
     setIsPlaying(false);
+    setIsLoading(false);
     setCurrentIndex(-1);
     onParagraphChange(-1);
     if (onWordBoundary) onWordBoundary(-1, 0);
