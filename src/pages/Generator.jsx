@@ -46,8 +46,9 @@ export default function Generator() {
     try {
       const instructions = `
         Keep it concise, around 300-400 words (about 3-5 minutes reading time max).
+        Generate conversational American English speech with a natural, casual tone, like a native speaker chatting with a friend. Include appropriate pauses (e.g., using commas or ellipses), intonation shifts, and emotional inflections to make the delivery sound genuine and engaging.
         Provide a good title. Find an appropriate image URL if possible, otherwise leave empty.
-        Break the article into 5-8 short paragraphs for easy reading.
+        Break the speech into 5-8 short paragraphs for easy reading.
         For each paragraph, provide the original English text ('en') and a natural, professional Chinese translation ('zh').
         Extract 5-8 core vocabulary words from the text. For each, provide the word, phonetic symbol (e.g. /tɛst/), part of speech (e.g. n., v., adj.), and Chinese meaning.
         Extract 2-3 useful English expressions, phrases, or idioms from the text. For each, provide the phrase, Chinese meaning, and an English example sentence.
