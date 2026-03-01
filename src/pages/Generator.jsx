@@ -15,6 +15,8 @@ export default function Generator() {
 
   const navigate = useNavigate();
   const [url, setUrl] = useState('');
+  const [textMode, setTextMode] = useState(false);
+  const [rawText, setRawText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
   const [article, setArticle] = useState({
@@ -36,19 +38,18 @@ export default function Generator() {
   }, [existingArticle]);
 
   const generate = async () => {
-    if (!url) return;
+    if (!textMode && !url) return;
+    if (textMode && !rawText) return;
+    
     setIsLoading(true);
     try {
+      const prompt = textMode 
+        ? `Here is an English article text:\n\n${rawText}\n\nKeep it concise, around 300-400 words (about 3-5 minutes reading time max).\nProvide a good title. Find an appropriate image URL if possible, otherwise leave empty.\nBreak the article into 5-8 short paragraphs for easy reading.\nFor each paragraph, provide the original English text ('en') and a natural, professional Chinese translation ('zh').\nExtract 5-8 core vocabulary words from the text. For each, provide the word, phonetic symbol (e.g. /tɛst/), part of speech (e.g. n., v., adj.), and Chinese meaning.\nExtract 2-3 useful English expressions, phrases, or idioms from the text. For each, provide the phrase, Chinese meaning, and an English example sentence.`
+        : `Extract the main article from this URL: ${url}. \nKeep it concise, around 300-400 words (about 3-5 minutes reading time max).\nProvide a good title. Find an appropriate image URL from the article if possible, otherwise leave empty.\nBreak the article into 5-8 short paragraphs for easy reading.\nFor each paragraph, provide the original English text ('en') and a natural, professional Chinese translation ('zh').\nExtract 5-8 core vocabulary words from the text. For each, provide the word, phonetic symbol (e.g. /tɛst/), part of speech (e.g. n., v., adj.), and Chinese meaning.\nExtract 2-3 useful English expressions, phrases, or idioms from the text. For each, provide the phrase, Chinese meaning, and an English example sentence.`;
+
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `Extract the main article from this URL: ${url}. 
-        Keep it concise, around 300-400 words (about 3-5 minutes reading time max).
-        Provide a good title. Find an appropriate image URL from the article if possible, otherwise leave empty.
-        Break the article into 5-8 short paragraphs for easy reading.
-        For each paragraph, provide the original English text ('en') and a natural, professional Chinese translation ('zh').
-        Extract 5-8 core vocabulary words from the text. For each, provide the word, phonetic symbol (e.g. /tɛst/), part of speech (e.g. n., v., adj.), and Chinese meaning.
-        Extract 2-3 useful English expressions, phrases, or idioms from the text. For each, provide the phrase, Chinese meaning, and an English example sentence.
-        `,
-        add_context_from_internet: true,
+        prompt,
+        add_context_from_internet: !textMode,
         response_json_schema: {
           type: "object",
           properties: {
@@ -82,11 +83,11 @@ export default function Generator() {
       setArticle(prev => ({
         ...prev,
         ...response,
-        source_url: url
+        source_url: textMode ? '' : url
       }));
     } catch (e) {
       console.error(e);
-      alert("Failed to generate article. The URL might be inaccessible or the content too large. Try another link.");
+      alert(`Failed to generate article: ${e.message || e.toString()}\n\nNote: If using a URL, the site might have anti-bot protection. Try pasting the text instead!`);
     } finally {
       setIsLoading(false);
     }
@@ -141,17 +142,45 @@ export default function Generator() {
         </p>
 
         {!isEditing && (
-          <div className="flex gap-4">
-            <Input 
-              value={url} 
-              onChange={e => setUrl(e.target.value)} 
-              placeholder="https://www.realsimple.com/..." 
-              className="flex-1 text-lg py-6"
-            />
-            <Button onClick={generate} disabled={isLoading || !url} className="bg-blue-600 hover:bg-blue-700 min-w-[160px] h-auto text-lg">
-              {isLoading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Sparkles className="w-5 h-5 mr-2" />}
-              Generate
-            </Button>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4 mb-4">
+              <Button 
+                variant={!textMode ? "default" : "outline"} 
+                onClick={() => setTextMode(false)}
+                className={!textMode ? "bg-blue-600 hover:bg-blue-700" : ""}
+              >
+                From URL
+              </Button>
+              <Button 
+                variant={textMode ? "default" : "outline"} 
+                onClick={() => setTextMode(true)}
+                className={textMode ? "bg-blue-600 hover:bg-blue-700" : ""}
+              >
+                Paste Text
+              </Button>
+            </div>
+            
+            <div className="flex gap-4 items-start">
+              {!textMode ? (
+                <Input 
+                  value={url} 
+                  onChange={e => setUrl(e.target.value)} 
+                  placeholder="https://www.realsimple.com/..." 
+                  className="flex-1 text-lg py-6"
+                />
+              ) : (
+                <Textarea 
+                  value={rawText} 
+                  onChange={e => setRawText(e.target.value)} 
+                  placeholder="Paste your article text here..." 
+                  className="flex-1 min-h-[150px] text-lg"
+                />
+              )}
+              <Button onClick={generate} disabled={isLoading || (!textMode && !url) || (textMode && !rawText)} className="bg-blue-600 hover:bg-blue-700 min-w-[160px] h-auto text-lg py-6">
+                {isLoading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Sparkles className="w-5 h-5 mr-2" />}
+                Generate
+              </Button>
+            </div>
           </div>
         )}
       </div>
