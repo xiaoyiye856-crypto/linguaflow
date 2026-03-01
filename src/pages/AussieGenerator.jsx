@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 export default function AussieGenerator() {
   const [mode, setMode] = useState('sentence'); // sentence, dialogue, vocab
   const [topic, setTopic] = useState('');
+  const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [generatedData, setGeneratedData] = useState(null);
 
@@ -92,12 +93,25 @@ export default function AussieGenerator() {
         };
       }
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        response_json_schema: schema
-      });
-      
-      setGeneratedData(response.items);
+      let response;
+      if (file) {
+        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+        response = await base44.integrations.Core.ExtractDataFromUploadedFile({
+          file_url,
+          json_schema: schema
+        });
+        if (response.status === 'success') {
+           setGeneratedData(response.output.items || response.output);
+        } else {
+           throw new Error(response.details || 'Extraction failed');
+        }
+      } else {
+        response = await base44.integrations.Core.InvokeLLM({
+          prompt,
+          response_json_schema: schema
+        });
+        setGeneratedData(response.items);
+      }
     } catch (e) {
       alert("Generation failed: " + e.message);
     } finally {
@@ -171,16 +185,28 @@ export default function AussieGenerator() {
           </Button>
         </div>
         
-        <div className="flex gap-4 items-start">
-          <Textarea 
-            value={topic} 
-            onChange={e => setTopic(e.target.value)} 
-            placeholder="Paste your article text here, or enter a topic like 'Buying beer at a pub'..." 
-            className="flex-1 min-h-[150px] text-lg"
-          />
-          <Button onClick={generate} disabled={isLoading || !topic} className="bg-[#FFCD00] hover:bg-[#e6b800] text-slate-900 min-w-[160px] h-auto text-lg py-6 shadow-md">
-            {isLoading ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Sparkles className="w-5 h-5 mr-2" />}
-            Generate
+        <div className="flex flex-col md:flex-row gap-4 items-start">
+          <div className="flex-1 w-full space-y-4">
+            <Textarea 
+              value={topic} 
+              onChange={e => setTopic(e.target.value)} 
+              placeholder="Paste your article text here, or enter a topic like 'Buying beer at a pub'..." 
+              className="w-full min-h-[150px] text-lg"
+            />
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-bold text-slate-500">OR Upload File:</span>
+              <Input 
+                type="file" 
+                onChange={e => setFile(e.target.files[0])} 
+                className="max-w-xs cursor-pointer"
+                accept=".txt,.pdf,.docx,.html,.csv"
+              />
+              {file && <span className="text-sm text-green-600 font-medium">Ready to extract</span>}
+            </div>
+          </div>
+          <Button onClick={generate} disabled={isLoading || (!topic && !file)} className="bg-[#FFCD00] hover:bg-[#e6b800] text-slate-900 w-full md:w-auto min-w-[160px] h-[150px] text-lg shadow-md flex-col gap-2">
+            {isLoading ? <Loader2 className="w-8 h-8 animate-spin" /> : <Sparkles className="w-8 h-8" />}
+            {file ? 'Extract from File' : 'Generate'}
           </Button>
         </div>
       </div>
