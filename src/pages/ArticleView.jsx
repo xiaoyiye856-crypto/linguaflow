@@ -267,6 +267,52 @@ export default function ArticleView() {
                 </div>
               )}
             </div>
+
+            {/* Extensions Section */}
+            {article.extensions && (article.extensions.speaking || article.extensions.writing || article.extensions.culture) && (
+              <div className="px-6 space-y-10 mt-10 border-t border-slate-200/60 pt-10">
+                <div className="flex items-center justify-center gap-4 mb-6">
+                  <div className="h-px bg-slate-300 flex-1" />
+                  <h3 className="text-[15px] font-black text-slate-800 tracking-[0.2em]">知识拓展</h3>
+                  <div className="h-px bg-slate-300 flex-1" />
+                </div>
+
+                <div className="space-y-5">
+                  {article.extensions.speaking && (
+                    <div className="bg-white rounded-xl shadow-sm border border-purple-100 overflow-hidden">
+                      <div className="px-4 py-2 bg-purple-50 border-b border-purple-100 font-bold text-purple-800 text-sm tracking-wide">
+                        🗣️ 口语表达
+                      </div>
+                      <div className="p-4 text-[15px] text-slate-700 leading-relaxed whitespace-pre-wrap">
+                        {article.extensions.speaking}
+                      </div>
+                    </div>
+                  )}
+
+                  {article.extensions.writing && (
+                    <div className="bg-white rounded-xl shadow-sm border border-blue-100 overflow-hidden">
+                      <div className="px-4 py-2 bg-blue-50 border-b border-blue-100 font-bold text-blue-800 text-sm tracking-wide">
+                        ✍️ 写作提升
+                      </div>
+                      <div className="p-4 text-[15px] text-slate-700 leading-relaxed whitespace-pre-wrap">
+                        {article.extensions.writing}
+                      </div>
+                    </div>
+                  )}
+
+                  {article.extensions.culture && (
+                    <div className="bg-white rounded-xl shadow-sm border border-emerald-100 overflow-hidden">
+                      <div className="px-4 py-2 bg-emerald-50 border-b border-emerald-100 font-bold text-emerald-800 text-sm tracking-wide">
+                        🌍 文化背景
+                      </div>
+                      <div className="p-4 text-[15px] text-slate-700 leading-relaxed whitespace-pre-wrap">
+                        {article.extensions.culture}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             
           </div>
         </div>

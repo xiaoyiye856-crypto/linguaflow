@@ -21,7 +21,8 @@ export default function Generator() {
   
   const [article, setArticle] = useState({
     title: '', source_url: '', reference_url: '', image_url: '',
-    paragraphs: [], vocabulary: [], expressions: []
+    paragraphs: [], vocabulary: [], expressions: [],
+    extensions: { speaking: '', writing: '', culture: '' }
   });
 
   const { data: existingArticle } = useQuery({
@@ -43,9 +44,22 @@ export default function Generator() {
     
     setIsLoading(true);
     try {
+      const instructions = `
+        Keep it concise, around 300-400 words (about 3-5 minutes reading time max).
+        Provide a good title. Find an appropriate image URL if possible, otherwise leave empty.
+        Break the article into 5-8 short paragraphs for easy reading.
+        For each paragraph, provide the original English text ('en') and a natural, professional Chinese translation ('zh').
+        Extract 5-8 core vocabulary words from the text. For each, provide the word, phonetic symbol (e.g. /tɛst/), part of speech (e.g. n., v., adj.), and Chinese meaning.
+        Extract 2-3 useful English expressions, phrases, or idioms from the text. For each, provide the phrase, Chinese meaning, and an English example sentence.
+        ALSO, provide 3 extension points (write these in Chinese):
+        1. 'speaking': How to use related concepts in oral English (口语表达拓展). Give specific tips and examples.
+        2. 'writing': How to use related advanced structures in writing (写作表达拓展). Give specific tips and examples.
+        3. 'culture': Related cultural background or context (文化拓展).
+      `;
+
       const prompt = textMode 
-        ? `Here is an English article text:\n\n${rawText}\n\nKeep it concise, around 300-400 words (about 3-5 minutes reading time max).\nProvide a good title. Find an appropriate image URL if possible, otherwise leave empty.\nBreak the article into 5-8 short paragraphs for easy reading.\nFor each paragraph, provide the original English text ('en') and a natural, professional Chinese translation ('zh').\nExtract 5-8 core vocabulary words from the text. For each, provide the word, phonetic symbol (e.g. /tɛst/), part of speech (e.g. n., v., adj.), and Chinese meaning.\nExtract 2-3 useful English expressions, phrases, or idioms from the text. For each, provide the phrase, Chinese meaning, and an English example sentence.`
-        : `Extract the main article from this URL: ${url}. \nKeep it concise, around 300-400 words (about 3-5 minutes reading time max).\nProvide a good title. Find an appropriate image URL from the article if possible, otherwise leave empty.\nBreak the article into 5-8 short paragraphs for easy reading.\nFor each paragraph, provide the original English text ('en') and a natural, professional Chinese translation ('zh').\nExtract 5-8 core vocabulary words from the text. For each, provide the word, phonetic symbol (e.g. /tɛst/), part of speech (e.g. n., v., adj.), and Chinese meaning.\nExtract 2-3 useful English expressions, phrases, or idioms from the text. For each, provide the phrase, Chinese meaning, and an English example sentence.`;
+        ? `Here is an English article text:\n\n${rawText}\n\n${instructions}`
+        : `Extract the main article from this URL: ${url}. \n${instructions}`;
 
       const response = await base44.integrations.Core.InvokeLLM({
         prompt,
@@ -74,6 +88,14 @@ export default function Generator() {
               items: {
                 type: "object",
                 properties: { phrase: { type: "string" }, meaning: { type: "string" }, example: { type: "string" } }
+              }
+            },
+            extensions: {
+              type: "object",
+              properties: {
+                speaking: { type: "string" },
+                writing: { type: "string" },
+                culture: { type: "string" }
               }
             }
           }
@@ -108,6 +130,10 @@ export default function Generator() {
   };
 
   const updateField = (field, value) => setArticle(p => ({...p, [field]: value}));
+  const updateExtension = (field, value) => setArticle(p => ({
+    ...p, 
+    extensions: { ...(p.extensions || {}), [field]: value }
+  }));
   
   const updateArray = (arrayName, index, field, value) => {
     setArticle(p => {
@@ -315,6 +341,40 @@ export default function Generator() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Extensions Section */}
+          <div className="space-y-6">
+            <h2 className="text-2xl font-serif font-bold text-slate-800 border-b pb-2">5. Knowledge Extensions</h2>
+            <div className="grid gap-6">
+              <div className="p-5 border border-slate-200 rounded-xl bg-purple-50/30">
+                <label className="block text-sm font-bold text-purple-800 mb-2">Speaking Extension (口语表达拓展)</label>
+                <Textarea 
+                  value={article.extensions?.speaking || ''} 
+                  onChange={e => updateExtension('speaking', e.target.value)} 
+                  className="min-h-[100px] text-base leading-relaxed resize-y" 
+                  placeholder="Specific tips and examples for using these concepts in oral English..."
+                />
+              </div>
+              <div className="p-5 border border-slate-200 rounded-xl bg-blue-50/30">
+                <label className="block text-sm font-bold text-blue-800 mb-2">Writing Extension (写作表达拓展)</label>
+                <Textarea 
+                  value={article.extensions?.writing || ''} 
+                  onChange={e => updateExtension('writing', e.target.value)} 
+                  className="min-h-[100px] text-base leading-relaxed resize-y" 
+                  placeholder="Advanced structures and vocabulary for formal writing..."
+                />
+              </div>
+              <div className="p-5 border border-slate-200 rounded-xl bg-emerald-50/30">
+                <label className="block text-sm font-bold text-emerald-800 mb-2">Cultural Context (文化拓展)</label>
+                <Textarea 
+                  value={article.extensions?.culture || ''} 
+                  onChange={e => updateExtension('culture', e.target.value)} 
+                  className="min-h-[100px] text-base leading-relaxed resize-y" 
+                  placeholder="Related cultural background, history, or context..."
+                />
+              </div>
             </div>
           </div>
 

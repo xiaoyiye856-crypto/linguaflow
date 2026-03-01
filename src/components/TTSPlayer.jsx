@@ -5,6 +5,7 @@ import { Play, Pause, Square } from "lucide-react";
 export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundary }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(-1);
+  const [accent, setAccent] = useState('US'); // 'US' or 'UK'
   const synthRef = useRef(window.speechSynthesis);
 
   useEffect(() => {
@@ -52,15 +53,17 @@ export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundar
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     
-    // Prioritize high-quality natural/neural US English voices
+    // Prioritize high-quality natural/neural voices based on selected accent
     const voices = synthRef.current.getVoices();
-    const isUS = (v) => v.lang === 'en-US' || v.lang === 'en_US';
+    const isTargetAccent = (v) => accent === 'US' 
+      ? (v.lang === 'en-US' || v.lang === 'en_US')
+      : (v.lang === 'en-GB' || v.lang === 'en_GB');
     
-    const usVoice = voices.find(v => isUS(v) && (v.name.includes('Online') || v.name.includes('Neural') || v.name.includes('Premium'))) 
-                 || voices.find(v => isUS(v) && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Natural')))
-                 || voices.find(v => isUS(v));
+    const bestVoice = voices.find(v => isTargetAccent(v) && (v.name.includes('Online') || v.name.includes('Neural') || v.name.includes('Premium'))) 
+                 || voices.find(v => isTargetAccent(v) && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel') || v.name.includes('Natural')))
+                 || voices.find(v => isTargetAccent(v));
                  
-    if (usVoice) utterance.voice = usVoice;
+    if (bestVoice) utterance.voice = bestVoice;
     
     // Slightly slower reading pace for language learning
     utterance.rate = 0.9;
@@ -103,7 +106,23 @@ export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundar
          <div className="w-5 h-5 bg-[#3b82f6] rounded-full" />
       </div>
       <div className="flex-1 px-2">
-        <div className="text-sm font-bold tracking-wider mb-2 text-slate-200">ARTICLE AUDIO</div>
+        <div className="flex items-center justify-between mb-2">
+          <div className="text-sm font-bold tracking-wider text-slate-200">ARTICLE AUDIO</div>
+          <div className="flex bg-slate-800 rounded-md p-0.5 border border-slate-700">
+            <button 
+              onClick={() => { setAccent('US'); stop(); }} 
+              className={`text-[10px] px-2 py-0.5 rounded font-bold transition-colors ${accent === 'US' ? 'bg-[#3b82f6] text-white' : 'text-slate-400 hover:text-white'}`}
+            >
+              US
+            </button>
+            <button 
+              onClick={() => { setAccent('UK'); stop(); }} 
+              className={`text-[10px] px-2 py-0.5 rounded font-bold transition-colors ${accent === 'UK' ? 'bg-[#3b82f6] text-white' : 'text-slate-400 hover:text-white'}`}
+            >
+              UK
+            </button>
+          </div>
+        </div>
         <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
           <div 
             className="bg-[#3b82f6] h-full transition-all duration-500 ease-out"
