@@ -15,25 +15,14 @@ export default function AussieDialogues() {
     initialData: []
   });
 
-  const playAudio = async (text) => {
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio = null;
-    }
-    
+  const playAudio = (text) => {
+    window.speechSynthesis.cancel();
     setLoadingText(text);
-    try {
-      const res = await base44.functions.invoke('generateAudio', { text });
-      if (res.data && res.data.audio) {
-        currentAudio = new Audio(res.data.audio);
-        currentAudio.play();
-      }
-    } catch (e) {
-      console.error(e);
-      alert('Failed to load audio. Please check your OpenAI API key.');
-    } finally {
-      setLoadingText(null);
-    }
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-AU';
+    utterance.onend = () => setLoadingText(null);
+    utterance.onerror = () => setLoadingText(null);
+    window.speechSynthesis.speak(utterance);
   };
 
   return (
