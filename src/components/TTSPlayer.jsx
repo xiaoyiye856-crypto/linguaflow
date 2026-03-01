@@ -59,8 +59,11 @@ export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundar
       ? (v.lang === 'en-US' || v.lang === 'en_US')
       : (v.lang === 'en-GB' || v.lang === 'en_GB');
     
-    const bestVoice = voices.find(v => isTargetAccent(v) && (v.name.includes('Online') || v.name.includes('Neural') || v.name.includes('Premium'))) 
-                 || voices.find(v => isTargetAccent(v) && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Daniel') || v.name.includes('Natural')))
+    const isMale = (name) => name.includes('Male') || name.includes('Gordon') || name.includes('Russell') || name.includes('William') || name.includes('James') || name.includes('Neil') || name.includes('Mac');
+    
+    const bestVoice = voices.find(v => isTargetAccent(v) && isMale(v.name) && (v.name.includes('Online') || v.name.includes('Neural') || v.name.includes('Premium'))) 
+                 || voices.find(v => isTargetAccent(v) && isMale(v.name) && (v.name.includes('Google') || v.name.includes('Daniel') || v.name.includes('Natural')))
+                 || voices.find(v => isTargetAccent(v) && isMale(v.name))
                  || voices.find(v => isTargetAccent(v));
                  
     if (bestVoice) utterance.voice = bestVoice;
