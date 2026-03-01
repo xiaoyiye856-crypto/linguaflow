@@ -53,6 +53,7 @@ import Home from './pages/Home';
 import AussieSentences from './pages/AussieSentences';
 import AussieDialogues from './pages/AussieDialogues';
 import AussieVocabulary from './pages/AussieVocabulary';
+import AussieGenerator from './pages/AussieGenerator';
 import __Layout from './Layout.jsx';
 
 
@@ -63,6 +64,7 @@ export const PAGES = {
     "AussieSentences": AussieSentences,
     "AussieDialogues": AussieDialogues,
     "AussieVocabulary": AussieVocabulary,
+    "AussieGenerator": AussieGenerator,
 }
 
 export const pagesConfig = {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Globe, Home, Quote, MessageCircle, BookOpen } from 'lucide-react';
+import { Globe, Home, Quote, MessageCircle, BookOpen, Wand2 } from 'lucide-react';
 
 export default function Layout({ children }) {
   return (
@@ -27,6 +27,9 @@ export default function Layout({ children }) {
                 <Link to={createPageUrl('AussieVocabulary')} className="flex items-center gap-1.5 hover:text-[#FFCD00] transition-colors">
                   <BookOpen className="w-4 h-4" /> 核心词汇
                 </Link>
+                <Link to={createPageUrl('AussieGenerator')} className="flex items-center gap-1.5 hover:text-[#FFCD00] text-emerald-300 font-bold transition-colors">
+                  <Wand2 className="w-4 h-4" /> AI 生成器
+                </Link>
               </div>
             </div>
           </div>
@@ -50,6 +53,10 @@ export default function Layout({ children }) {
         <Link to={createPageUrl('AussieVocabulary')} className="flex flex-col items-center gap-1">
           <BookOpen className="w-5 h-5" />
           <span>词汇</span>
+        </Link>
+        <Link to={createPageUrl('AussieGenerator')} className="flex flex-col items-center gap-1 text-emerald-300">
+          <Wand2 className="w-5 h-5" />
+          <span>生成器</span>
         </Link>
       </div>
 
