@@ -7,35 +7,79 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import TTSPlayer from '@/components/TTSPlayer';
 
-function HighlightedText({ text, vocabulary }) {
+function HighlightedText({ text, vocabulary, isActive, activeCharIndex, activeCharLength }) {
   if (!text) return null;
-  const words = (vocabulary || []).map(v => v.word).filter(Boolean);
-  if (words.length === 0) return <span>{text}</span>;
-
-  // Sort words by length descending so longer phrases get matched first
-  words.sort((a, b) => b.length - a.length);
   
-  // Escape regex specials
-  const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regex = new RegExp(`\\b(${words.map(escapeRegExp).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
-
+  const chars = text.split('');
+  const classMap = new Array(chars.length).fill('');
+  
+  // 1. Mark vocabulary
+  const words = (vocabulary || []).map(v => v.word).filter(Boolean);
+  if (words.length > 0) {
+    words.sort((a, b) => b.length - a.length);
+    const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`\\b(${words.map(escapeRegExp).join('|')})\\b`, 'gi');
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+      const start = match.index;
+      const end = start + match[0].length;
+      for (let i = start; i < end; i++) {
+        classMap[i] += ' is-vocab';
+      }
+    }
+  }
+  
+  // 2. Mark currently spoken word
+  if (isActive && activeCharIndex >= 0) {
+    let length = activeCharLength || 0;
+    if (length === 0) {
+      const remaining = text.slice(activeCharIndex);
+      const match = remaining.match(/^[a-zA-Z0-9_'-]+/);
+      length = match ? match[0].length : 1;
+    }
+    const end = activeCharIndex + length;
+    for (let i = activeCharIndex; i < end && i < chars.length; i++) {
+      classMap[i] += ' is-spoken';
+    }
+  }
+  
+  // 3. Group characters by classMap
+  const segments = [];
+  if (chars.length > 0) {
+    let currentClass = classMap[0];
+    let currentText = chars[0];
+    for (let i = 1; i < chars.length; i++) {
+      if (classMap[i] === currentClass) {
+        currentText += chars[i];
+      } else {
+        segments.push({ text: currentText, classes: currentClass });
+        currentClass = classMap[i];
+        currentText = chars[i];
+      }
+    }
+    segments.push({ text: currentText, classes: currentClass });
+  }
+  
   return (
     <span>
-      {parts.map((part, i) => {
-        const isVocab = words.some(w => w.toLowerCase() === part.toLowerCase());
-        if (isVocab) {
-          return (
-            <span 
-              key={i} 
-              className="bg-slate-200 text-[#1e293b] px-1.5 py-0.5 mx-0.5 rounded cursor-help transition-colors hover:bg-blue-200"
-              title="See vocabulary list for details"
-            >
-              {part}
-            </span>
-          );
+      {segments.map((seg, i) => {
+        let className = "";
+        const isVocab = seg.classes.includes('is-vocab');
+        const isSpoken = seg.classes.includes('is-spoken');
+        
+        if (isSpoken) {
+          className = "bg-blue-600 text-white rounded-sm transition-colors duration-75 px-0.5 mx-[1px] shadow-sm";
+        } else if (isVocab) {
+          className = "bg-slate-200 text-[#1e293b] px-1.5 py-0.5 mx-0.5 rounded cursor-help transition-colors hover:bg-blue-200";
         }
-        return <span key={i}>{part}</span>;
+        
+        return className ? (
+          <span key={i} className={className} title={isVocab && !isSpoken ? "See vocabulary list for details" : undefined}>
+            {seg.text}
+          </span>
+        ) : (
+          <span key={i}>{seg.text}</span>
+        );
       })}
     </span>
   );
@@ -45,6 +89,8 @@ export default function ArticleView() {
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
   const [activeParagraph, setActiveParagraph] = useState(-1);
+  const [activeCharIndex, setActiveCharIndex] = useState(-1);
+  const [activeCharLength, setActiveCharLength] = useState(0);
 
   const { data: article, isLoading } = useQuery({
     queryKey: ['article', id],
@@ -115,7 +161,13 @@ export default function ArticleView() {
                 className={`transition-all duration-500 rounded-xl ${activeParagraph === idx ? 'bg-blue-50/60 p-6 -mx-6 shadow-sm border border-blue-100' : 'p-2 -mx-2'}`}
               >
                 <p className="text-xl lg:text-[22px] font-serif text-slate-900 leading-relaxed mb-5 text-justify">
-                  <HighlightedText text={p.en} vocabulary={article.vocabulary} />
+                  <HighlightedText 
+                    text={p.en} 
+                    vocabulary={article.vocabulary} 
+                    isActive={activeParagraph === idx}
+                    activeCharIndex={activeCharIndex}
+                    activeCharLength={activeCharLength}
+                  />
                 </p>
                 <p className="text-base lg:text-[17px] text-slate-600 font-sans leading-relaxed tracking-wide text-justify">
                   {p.zh}
@@ -151,7 +203,18 @@ export default function ArticleView() {
             
             {/* Audio Player pinned at the top of the sidebar */}
             <div className="z-10 bg-[#f8fafc] pt-8 px-6 pb-6">
-              <TTSPlayer paragraphs={article.paragraphs} onParagraphChange={setActiveParagraph} />
+              <TTSPlayer 
+                paragraphs={article.paragraphs} 
+                onParagraphChange={(idx) => {
+                  setActiveParagraph(idx);
+                  setActiveCharIndex(-1);
+                  setActiveCharLength(0);
+                }}
+                onWordBoundary={(idx, len) => {
+                  setActiveCharIndex(idx);
+                  setActiveCharLength(len);
+                }}
+              />
             </div>
 
             <div className="px-6 space-y-10">

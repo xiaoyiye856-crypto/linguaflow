@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Play, Pause, Square } from "lucide-react";
 
-export default function TTSPlayer({ paragraphs, onParagraphChange }) {
+export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundary }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const synthRef = useRef(window.speechSynthesis);
@@ -52,17 +52,27 @@ export default function TTSPlayer({ paragraphs, onParagraphChange }) {
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     
-    // Try to find a natural US English voice
+    // Prioritize high-quality natural/neural US English voices
     const voices = synthRef.current.getVoices();
-    const usVoice = voices.find(v => v.lang === 'en-US' && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Premium') || v.name.includes('Samantha'))) 
-                 || voices.find(v => v.lang === 'en-US' || v.lang === 'en_US');
+    const isUS = (v) => v.lang === 'en-US' || v.lang === 'en_US';
+    
+    const usVoice = voices.find(v => isUS(v) && (v.name.includes('Online') || v.name.includes('Neural') || v.name.includes('Premium'))) 
+                 || voices.find(v => isUS(v) && (v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Natural')))
+                 || voices.find(v => isUS(v));
                  
     if (usVoice) utterance.voice = usVoice;
     
     // Slightly slower reading pace for language learning
     utterance.rate = 0.9;
     
+    utterance.onboundary = (e) => {
+      if (e.name === 'word') {
+        if (onWordBoundary) onWordBoundary(e.charIndex, e.charLength);
+      }
+    };
+    
     utterance.onend = () => {
+      if (onWordBoundary) onWordBoundary(-1, 0);
       speakParagraph(index + 1);
     };
 
@@ -84,6 +94,7 @@ export default function TTSPlayer({ paragraphs, onParagraphChange }) {
     setIsPlaying(false);
     setCurrentIndex(-1);
     onParagraphChange(-1);
+    if (onWordBoundary) onWordBoundary(-1, 0);
   };
 
   return (
