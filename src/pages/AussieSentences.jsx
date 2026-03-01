@@ -1,28 +1,38 @@
 import React from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Play } from 'lucide-react';
+import { Play, Loader2 } from 'lucide-react';
+
+let currentAudio = null;
 
 export default function AussieSentences() {
+  const [loadingText, setLoadingText] = React.useState(null);
+
   const { data: sentences, isLoading } = useQuery({
     queryKey: ['aussie_sentences'],
     queryFn: () => base44.entities.AussieSentence.list(),
     initialData: []
   });
 
-  const playAudio = (text) => {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    const isMale = (name) => name.includes('Male') || name.includes('Gordon') || name.includes('Russell') || name.includes('William') || name.includes('James') || name.includes('Neil') || name.includes('Mac');
-    const auVoice = voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && isMale(v.name) && (v.name.includes('Neural') || v.name.includes('Natural') || v.name.includes('Online')))
-                 || voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && isMale(v.name))
-                 || voices.find(v => (v.lang === 'en-AU' || v.lang === 'en_AU') && (v.name.includes('Neural') || v.name.includes('Natural')))
-                 || voices.find(v => v.lang === 'en-AU' || v.lang === 'en_AU')
-                 || voices.find(v => v.lang.startsWith('en'));
-    if (auVoice) utterance.voice = auVoice;
-    utterance.rate = 0.9;
-    window.speechSynthesis.speak(utterance);
+  const playAudio = async (text) => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio = null;
+    }
+    
+    setLoadingText(text);
+    try {
+      const res = await base44.functions.invoke('generateAudio', { text });
+      if (res.data && res.data.audio) {
+        currentAudio = new Audio(res.data.audio);
+        currentAudio.play();
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Failed to load audio. Please check your OpenAI API key.');
+    } finally {
+      setLoadingText(null);
+    }
   };
 
   return (
@@ -58,7 +68,11 @@ export default function AussieSentences() {
                   >
                     <div className="font-bold text-slate-900 group-hover:text-[#00843D] transition-colors flex items-start gap-2">
                       <span className="bg-[#FFCD00]/40 px-1.5 py-0.5 rounded inline-block">{item.correct_en}</span>
-                      <Play className="w-4 h-4 text-[#00843D] shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      {loadingText === item.correct_en ? (
+                        <Loader2 className="w-4 h-4 text-[#00843D] shrink-0 mt-1 animate-spin" />
+                      ) : (
+                        <Play className="w-4 h-4 text-[#00843D] shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      )}
                     </div>
                     {item.explanation && (
                       <div className="text-emerald-700 text-xs mt-2 font-medium opacity-80">
