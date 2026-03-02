@@ -44,8 +44,8 @@ export default function Home() {
             <div className="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <BookOpen className="w-7 h-7" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-3">1000核心词汇</h2>
-            <p className="text-slate-600">不背无用词汇，精选澳洲日常高频词，辅以地道例句练习。</p>
+            <h2 className="text-2xl font-bold text-slate-900 mb-3">100核心短语</h2>
+            <p className="text-slate-600">不背无用词汇，精选澳洲日常高频核心短语，辅以地道例句练习。</p>
           </div>
         </Link>
       </div>
