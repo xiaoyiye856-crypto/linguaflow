@@ -14,26 +14,52 @@ export default function AussieVocabulary() {
     initialData: []
   });
 
-  const playAudio = (text) => {
-    window.speechSynthesis.cancel();
+  const playAudio = async (text, voice = 'nova') => {
     setLoadingText(text);
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-AU';
-    utterance.onend = () => setLoadingText(null);
-    utterance.onerror = () => setLoadingText(null);
-    window.speechSynthesis.speak(utterance);
+    try {
+      const res = await base44.functions.invoke('generateAudio', { text, voice });
+      if (res.data && res.data.audio) {
+        const audio = new Audio(res.data.audio);
+        audio.play();
+      }
+    } catch (e) {
+      console.error(e);
+      // Fallback
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-AU';
+      window.speechSynthesis.speak(utterance);
+    } finally {
+      setLoadingText(null);
+    }
   };
+
+  const groupedVocab = React.useMemo(() => {
+    const groups = {};
+    vocab.forEach(v => {
+      const cat = v.category || 'Other';
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(v);
+    });
+    return groups;
+  }, [vocab]);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12 animate-in fade-in duration-500">
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-black text-slate-900 mb-4">Aussie Core Vocab 📚</h1>
-        <p className="text-lg text-slate-500">1000个日常口语最常用词汇及造句</p>
+        <h1 className="text-4xl font-black text-slate-900 mb-4">Aussie Core Phrases 🗣️</h1>
+        <p className="text-lg text-slate-500">100个生活常用核心短语分类学习</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {isLoading && <div className="col-span-full text-center text-slate-500">加载中...</div>}
-        {vocab.map((item) => (
+      <div className="space-y-12">
+        {isLoading && <div className="text-center text-slate-500">加载中...</div>}
+        {Object.entries(groupedVocab).map(([category, items]) => (
+          <div key={category}>
+            <h2 className="text-2xl font-bold text-[#00843D] mb-6 flex items-center gap-2 border-b pb-2">
+              {category}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {items.map((item) => (
           <div key={item.id} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md hover:border-[#00843D]/30 transition-all">
             <div className="flex justify-between items-start mb-4">
               <div>
@@ -67,8 +93,11 @@ export default function AussieVocabulary() {
             </div>
           </div>
         ))}
+            </div>
+          </div>
+        ))}
         {vocab.length === 0 && !isLoading && (
-          <div className="col-span-full text-center p-10 bg-white rounded-xl text-slate-500 border border-slate-200">正在生成词汇...</div>
+          <div className="text-center p-10 bg-white rounded-xl text-slate-500 border border-slate-200">无数据或正在生成中...</div>
         )}
       </div>
     </div>
