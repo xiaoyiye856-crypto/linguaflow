@@ -14,15 +14,29 @@ export default function AussieSentences() {
     initialData: []
   });
 
-  const playAudio = (text) => {
-    window.speechSynthesis.cancel();
+  const playAudio = async (text, voice = 'nova') => {
     setLoadingText(text);
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-AU';
-    utterance.onend = () => setLoadingText(null);
-    utterance.onerror = () => setLoadingText(null);
-    window.speechSynthesis.speak(utterance);
+    try {
+      const res = await base44.functions.invoke('generateAudio', { text, voice });
+      if (res.data && res.data.audio) {
+        const audio = new Audio(res.data.audio);
+        audio.play();
+      }
+    } catch (e) {
+      console.error(e);
+      // Fallback
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-AU';
+      window.speechSynthesis.speak(utterance);
+    } finally {
+      setLoadingText(null);
+    }
   };
+
+  const sortedSentences = React.useMemo(() => {
+    return [...sentences].sort((a, b) => (b.usefulness_score || 0) - (a.usefulness_score || 0));
+  }, [sentences]);
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 animate-in fade-in duration-500">
@@ -44,9 +58,10 @@ export default function AussieSentences() {
           <div className="p-10 text-center text-slate-500">加载中...</div>
         ) : (
           <div className="divide-y divide-slate-100">
-            {sentences.map((item) => (
-              <div key={item.id} className="grid grid-cols-12 p-4 md:p-6 items-center hover:bg-slate-50 transition-colors">
-                <div className="col-span-3 font-bold text-slate-800 text-sm md:text-base pr-2">{item.chinese}</div>
+            {sortedSentences.map((item) => (
+              <div key={item.id} className="p-4 md:p-6 hover:bg-slate-50 transition-colors">
+                <div className="grid grid-cols-12 items-center">
+                  <div className="col-span-3 font-bold text-slate-800 text-sm md:text-base pr-2">{item.chinese}</div>
                 <div className="col-span-4 text-slate-400 text-sm md:text-base pr-2">
                   <span className="line-through">{item.wrong_en}</span> ❌
                 </div>
@@ -71,6 +86,16 @@ export default function AussieSentences() {
                   </button>
                 </div>
               </div>
+              {item.cultural_extension && (
+                <div className="mt-3 bg-amber-50 p-3 rounded-lg text-xs text-amber-900 border border-amber-100 flex gap-2">
+                  <span className="text-sm">💡</span>
+                  <div>
+                    <span className="font-bold mr-2">文化拓展:</span>
+                    {item.cultural_extension}
+                  </div>
+                </div>
+              )}
+            </div>
             ))}
             {sentences.length === 0 && (
               <div className="p-10 text-center text-slate-500">

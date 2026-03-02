@@ -25,7 +25,7 @@ export default function Layout({ children }) {
                   <MessageCircle className="w-4 h-4" /> Small Talk
                 </Link>
                 <Link to={createPageUrl('AussieVocabulary')} className="flex items-center gap-1.5 hover:text-[#FFCD00] transition-colors">
-                  <BookOpen className="w-4 h-4" /> 核心词汇
+                  <BookOpen className="w-4 h-4" /> 核心短语
                 </Link>
                 <Link to={createPageUrl('AussieGenerator')} className="flex items-center gap-1.5 hover:text-[#FFCD00] text-emerald-300 font-bold transition-colors">
                   <Wand2 className="w-4 h-4" /> AI 生成器
@@ -52,7 +52,7 @@ export default function Layout({ children }) {
         </Link>
         <Link to={createPageUrl('AussieVocabulary')} className="flex flex-col items-center gap-1">
           <BookOpen className="w-5 h-5" />
-          <span>词汇</span>
+          <span>短语</span>
         </Link>
         <Link to={createPageUrl('AussieGenerator')} className="flex flex-col items-center gap-1 text-emerald-300">
           <Wand2 className="w-5 h-5" />
