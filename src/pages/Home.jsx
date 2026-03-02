@@ -45,7 +45,7 @@ export default function Home() {
               <BookOpen className="w-7 h-7" />
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-3">100核心短语</h2>
-            <p className="text-slate-600">不背无用词汇，精选澳洲日常高频核心短语，辅以地道例句练习。</p>
+            <p className="text-slate-600">不背无用词汇，精选澳洲日常高频短语，辅以地道例句练习。</p>
           </div>
         </Link>
       </div>
