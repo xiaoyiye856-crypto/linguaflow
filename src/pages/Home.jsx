@@ -30,22 +30,32 @@ export default function Home() {
         </Link>
 
         <Link to={createPageUrl('AussieDialogues')} className="group">
-          <div className="bg-white rounded-3xl p-8 h-full border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-blue-500/30 transition-all duration-300">
-            <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <MessageCircle className="w-7 h-7" />
+          <div className="bg-white rounded-3xl p-6 h-full border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-blue-500/30 transition-all duration-300">
+            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <MessageCircle className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-3">100个 Small Talk</h2>
-            <p className="text-slate-600">咖啡店、超市、职场闲聊...各种生活情景对话一网打尽。</p>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">100个 Small Talk</h2>
+            <p className="text-slate-600 text-sm">咖啡店、超市、职场闲聊...各种生活情景对话一网打尽。</p>
           </div>
         </Link>
 
         <Link to={createPageUrl('AussieVocabulary')} className="group">
-          <div className="bg-white rounded-3xl p-8 h-full border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-purple-500/30 transition-all duration-300">
-            <div className="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <BookOpen className="w-7 h-7" />
+          <div className="bg-white rounded-3xl p-6 h-full border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-purple-500/30 transition-all duration-300">
+            <div className="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <BookOpen className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-3">100核心短语</h2>
-            <p className="text-slate-600">不背无用词汇，精选澳洲日常高频短语，辅以地道例句练习。</p>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">100个日常核心短语</h2>
+            <p className="text-slate-600 text-sm">不背无用词汇，精选澳洲日常高频短语，辅以地道例句练习。</p>
+          </div>
+        </Link>
+
+        <Link to={createPageUrl('Articles')} className="group">
+          <div className="bg-white rounded-3xl p-6 h-full border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-amber-500/30 transition-all duration-300">
+            <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <Newspaper className="w-6 h-6" />
+            </div>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">澳洲杂志期刊</h2>
+            <p className="text-slate-600 text-sm">双语阅读，自动提取核心词汇与文化拓展，培养语感。</p>
           </div>
         </Link>
       </div>
