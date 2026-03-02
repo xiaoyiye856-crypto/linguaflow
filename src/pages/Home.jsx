@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { MessageCircle, BookOpen, Quote, Sparkles } from 'lucide-react';
+import { MessageCircle, BookOpen, Quote, Sparkles, Newspaper } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -18,14 +18,14 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Link to={createPageUrl('AussieSentences')} className="group">
-          <div className="bg-white rounded-3xl p-8 h-full border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-[#00843D]/30 transition-all duration-300">
-            <div className="w-14 h-14 bg-emerald-50 text-[#00843D] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <Quote className="w-7 h-7" />
+          <div className="bg-white rounded-3xl p-6 h-full border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-[#00843D]/30 transition-all duration-300">
+            <div className="w-12 h-12 bg-emerald-50 text-[#00843D] rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+              <Quote className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-3">200句易错口语</h2>
-            <p className="text-slate-600">对比“你以为的”和“地道表达”，解决生活中的高频尴尬场景。</p>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">100句地道澳洲口语</h2>
+            <p className="text-slate-600 text-sm">对比“你以为的”和“地道表达”，解决生活中的高频尴尬场景。</p>
           </div>
         </Link>
 
