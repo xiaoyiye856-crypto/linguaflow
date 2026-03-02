@@ -8,7 +8,7 @@ const openai = new OpenAI({
 
 Deno.serve(async (req) => {
     try {
-        const { text } = await req.json();
+        const { text, voice = "nova" } = await req.json();
         
         if (!text) {
             return Response.json({ error: 'Text is required' }, { status: 400 });
@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
 
         const mp3 = await openai.audio.speech.create({
             model: "tts-1",
-            voice: "onyx", // Onyx is a deep, male voice
+            voice: voice,
             input: text,
         });
 
