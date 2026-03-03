@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Volume2, Loader2, BookOpen, Edit, Save } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Volume2, Loader2, BookOpen } from 'lucide-react';
 
 export default function AussieVocabulary() {
   const [loadingText, setLoadingText] = useState(null);
-  const [isEditingOrder, setIsEditingOrder] = useState(false);
-  const [orders, setOrders] = useState({});
-  const [isSaving, setIsSaving] = useState(false);
 
-  const { data: vocab, isLoading, refetch } = useQuery({
+  const { data: vocab, isLoading } = useQuery({
     queryKey: ['aussie_vocab'],
     queryFn: () => base44.entities.AussieVocabulary.list(),
     initialData: []
@@ -37,37 +33,6 @@ export default function AussieVocabulary() {
     }
   };
 
-  const toggleEditMode = () => {
-    if (!isEditingOrder) {
-      const initialOrders = {};
-      sortedVocab.forEach((v, i) => { initialOrders[v.id] = v.sort_order || i; });
-      setOrders(initialOrders);
-    }
-    setIsEditingOrder(!isEditingOrder);
-  };
-
-  const handleSaveOrder = async () => {
-    setIsSaving(true);
-    try {
-      const updates = [];
-      for (const item of vocab) {
-        if (orders[item.id] !== undefined && orders[item.id] !== item.sort_order) {
-          updates.push(base44.entities.AussieVocabulary.update(item.id, { sort_order: Number(orders[item.id]) }));
-        }
-      }
-      if (updates.length > 0) {
-        await Promise.all(updates);
-        await refetch();
-      }
-      setIsEditingOrder(false);
-    } catch (e) {
-      console.error(e);
-      alert("Failed to save order");
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   const groupedVocab = React.useMemo(() => {
     const groups = {};
     sortedVocab.forEach(item => {
@@ -82,20 +47,7 @@ export default function AussieVocabulary() {
     <div className="max-w-5xl mx-auto px-4 py-12 animate-in fade-in duration-500">
       <div className="text-center mb-10 relative">
         <h1 className="text-4xl font-black text-slate-900 mb-4">100个日常核心短语 🌟</h1>
-        <p className="text-lg text-slate-500">分类整理，支持排序与发音跟读</p>
-        
-        <div className="absolute top-0 right-0">
-          {isEditingOrder ? (
-            <Button size="sm" variant="outline" onClick={handleSaveOrder} disabled={isSaving}>
-              {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-              Save Order
-            </Button>
-          ) : (
-            <Button size="sm" variant="outline" onClick={toggleEditMode}>
-              <Edit className="w-4 h-4 mr-2" /> Edit Order
-            </Button>
-          )}
-        </div>
+        <p className="text-lg text-slate-500">掌握地道短语，更好融入澳洲当地生活，支持发音跟读</p>
       </div>
 
       {isLoading && <div className="text-center text-slate-500">加载中...</div>}
@@ -109,17 +61,6 @@ export default function AussieVocabulary() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {items.map((item) => (
                 <div key={item.id} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md hover:border-[#00843D]/30 transition-all flex flex-col">
-                  {isEditingOrder && (
-                    <div className="mb-4 bg-slate-50 p-2 rounded-lg flex items-center gap-3">
-                      <span className="text-sm font-bold text-slate-500">Sort Order:</span>
-                      <input 
-                        type="number" 
-                        value={orders[item.id] ?? ''} 
-                        onChange={(e) => setOrders({...orders, [item.id]: e.target.value})}
-                        className="w-20 p-1 border rounded text-center text-sm font-mono"
-                      />
-                    </div>
-                  )}
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <div className="flex items-end gap-3 mb-1">
