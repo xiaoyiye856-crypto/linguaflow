@@ -97,13 +97,26 @@ export default function AussieDialogues() {
         const line = lines[i];
         const voice = line.gender === 'male' ? 'onyx' : 'nova';
         setLoadingText(line.en); // highlight current line
-        const res = await base44.functions.invoke('generateAudio', { text: line.en, voice });
-        if (res.data && res.data.audio) {
-          const audio = new Audio(res.data.audio);
+        
+        try {
+          const res = await base44.functions.invoke('generateAudio', { text: line.en, voice });
+          if (res.data && res.data.audio) {
+            const audio = new Audio(res.data.audio);
+            await new Promise((resolve) => {
+              audio.onended = resolve;
+              audio.onerror = resolve;
+              audio.play();
+            });
+          }
+        } catch (e) {
+          console.error(e);
           await new Promise((resolve) => {
-            audio.onended = resolve;
-            audio.onerror = resolve;
-            audio.play();
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(line.en);
+            utterance.lang = 'en-AU';
+            utterance.onend = resolve;
+            utterance.onerror = resolve;
+            window.speechSynthesis.speak(utterance);
           });
         }
       }
