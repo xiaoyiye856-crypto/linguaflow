@@ -34,7 +34,7 @@ export default function Home() {
             <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
               <MessageCircle className="w-6 h-6" />
             </div>
-            <h2 className="text-xl font-bold text-slate-900 mb-2">100个 Small Talk</h2>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">50个实用主题 Small Talk 对话</h2>
             <p className="text-slate-600 text-sm">咖啡店、超市、职场闲聊...各种生活情景对话一网打尽。</p>
           </div>
         </Link>
