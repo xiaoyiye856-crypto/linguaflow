@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Play, Loader2, Sparkles, Folder, ArrowLeft, Edit, Save } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 export default function AussieDialogues() {
   const [loadingText, setLoadingText] = useState(null);
@@ -87,7 +88,7 @@ export default function AussieDialogues() {
     <div className="max-w-4xl mx-auto px-4 py-12 animate-in fade-in duration-500">
       <div className="text-center mb-10 relative">
         <h1 className="text-4xl font-black text-slate-900 mb-4">Aussie Small Talk 🗣️</h1>
-        <p className="text-lg text-slate-500">澳洲生活常见情景对话练习 (按常用程度分类与排序)</p>
+        <p className="text-lg text-slate-500">直击澳洲生活的 Small Talk 对话，覆盖各类日常场景，助你轻松破冰，拒绝社交尴尬！</p>
         
         <div className="absolute top-0 right-0">
           {activeCategory && (
@@ -143,64 +144,72 @@ export default function AussieDialogues() {
             </h2>
           </div>
 
-          {filteredDialogues.map((dialogue) => (
-            <Card key={dialogue.id} className="overflow-hidden border border-slate-200 shadow-md">
-              <div className="bg-[#1e293b] text-white px-6 py-4 flex justify-between items-center">
-                <div className="flex-1 flex items-center gap-4">
+          <Accordion type="single" collapsible className="w-full space-y-4">
+            {filteredDialogues.map((dialogue, index) => (
+              <AccordionItem key={dialogue.id} value={dialogue.id} className="bg-white border border-slate-200 shadow-sm rounded-xl overflow-hidden data-[state=open]:ring-2 data-[state=open]:ring-blue-500/20 transition-all">
+                <div className="flex items-center w-full px-6 hover:bg-slate-50 transition-colors group/trigger">
                   {isEditingOrder && (
                     <input 
                       type="number" 
                       value={orders[dialogue.id] ?? ''} 
                       onChange={(e) => setOrders({...orders, [dialogue.id]: e.target.value})}
-                      className="w-16 p-1 text-slate-900 rounded text-center text-sm font-mono"
+                      className="w-16 p-1 text-slate-900 rounded text-center text-sm font-mono border mr-4 z-10 relative"
+                      onClick={(e) => e.stopPropagation()}
                     />
                   )}
-                  <div>
-                    <h2 className="text-xl font-bold">{dialogue.title}</h2>
-                    <p className="text-sm text-slate-300 mt-1">{dialogue.context}</p>
-                  </div>
+                  <AccordionTrigger className="hover:no-underline py-4 flex-1 justify-between w-full">
+                    <div className="flex items-center gap-4 text-left w-full">
+                      <span className="text-blue-600 font-black text-lg bg-blue-50 w-8 h-8 flex items-center justify-center rounded-lg shrink-0 group-hover/trigger:scale-110 transition-transform">{index + 1}</span>
+                      <div className="flex flex-col">
+                        <h2 className="text-xl font-bold text-slate-900 group-hover/trigger:text-blue-600 transition-colors">{dialogue.title}</h2>
+                        {dialogue.context && <p className="text-sm text-slate-500 font-normal mt-0.5">{dialogue.context}</p>}
+                      </div>
+                    </div>
+                  </AccordionTrigger>
                 </div>
-              </div>
-              
-              {dialogue.cultural_extension && (
-                <div className="bg-[#f0fdf4] border-b border-[#bbf7d0] px-6 py-3 flex gap-3 items-start">
-                  <Sparkles className="w-5 h-5 text-[#16a34a] shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-bold text-[#166534] text-sm mb-0.5">文化拓展 Cultural Tip</h4>
-                    <p className="text-sm text-[#15803d]">{dialogue.cultural_extension}</p>
-                  </div>
-                </div>
-              )}
+                
+                <AccordionContent className="border-t border-slate-100 bg-slate-50/50">
+                  {dialogue.cultural_extension && (
+                    <div className="bg-[#f0fdf4] border-b border-[#bbf7d0] px-6 py-4 flex gap-3 items-start">
+                      <Sparkles className="w-5 h-5 text-[#16a34a] shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="font-bold text-[#166534] text-sm mb-1">文化拓展 Cultural Tip</h4>
+                        <p className="text-sm text-[#15803d] leading-relaxed">{dialogue.cultural_extension}</p>
+                      </div>
+                    </div>
+                  )}
 
-              <div className="p-6 space-y-6 bg-slate-50">
-                {dialogue.lines?.map((line, idx) => (
-                  <div key={idx} className="flex gap-4">
-                    <div className="w-16 shrink-0 text-right mt-1">
-                      <span className={`font-bold text-sm uppercase tracking-wider ${line.gender === 'female' ? 'text-pink-600' : line.gender === 'male' ? 'text-blue-600' : 'text-[#00843D]'}`}>
-                        {line.speaker}
-                      </span>
-                    </div>
-                    <div className="flex-1 group">
-                      <button 
-                        onClick={() => playAudio(line.en, line.gender || (idx % 2 === 0 ? 'female' : 'male'))}
-                        className="text-left w-full hover:bg-white p-3 -m-3 rounded-xl transition-colors border border-transparent hover:border-slate-200 hover:shadow-sm"
-                      >
-                        <div className="text-lg font-bold text-slate-900 mb-1 flex items-start justify-between gap-4">
-                          <span>{line.en}</span>
-                          {loadingText === line.en ? (
-                            <Loader2 className="w-4 h-4 text-blue-500 animate-spin shrink-0 mt-1" />
-                          ) : (
-                            <Play className="w-4 h-4 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-1" />
-                          )}
+                  <div className="p-6 space-y-6">
+                    {dialogue.lines?.map((line, idx) => (
+                      <div key={idx} className="flex gap-4">
+                        <div className="w-16 shrink-0 text-right mt-1">
+                          <span className={`font-bold text-sm uppercase tracking-wider ${line.gender === 'female' ? 'text-pink-600' : line.gender === 'male' ? 'text-blue-600' : 'text-[#00843D]'}`}>
+                            {line.speaker}
+                          </span>
                         </div>
-                        <div className="text-slate-600 text-sm">{line.zh}</div>
-                      </button>
-                    </div>
+                        <div className="flex-1 group">
+                          <button 
+                            onClick={() => playAudio(line.en, line.gender || (idx % 2 === 0 ? 'female' : 'male'))}
+                            className="text-left w-full hover:bg-white p-3 -m-3 rounded-xl transition-colors border border-transparent hover:border-slate-200 hover:shadow-sm"
+                          >
+                            <div className="text-lg font-bold text-slate-900 mb-1 flex items-start justify-between gap-4">
+                              <span>{line.en}</span>
+                              {loadingText === line.en ? (
+                                <Loader2 className="w-4 h-4 text-blue-500 animate-spin shrink-0 mt-1" />
+                              ) : (
+                                <Play className="w-4 h-4 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-1" />
+                              )}
+                            </div>
+                            <div className="text-slate-600 text-sm">{line.zh}</div>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </Card>
-          ))}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       )}
     </div>
