@@ -221,6 +221,8 @@ export default function AussieDialogues() {
                     ))}
                   </div>
 
+                  <DialoguePractice dialogue={dialogue} />
+
                   <div className="bg-white border-t border-slate-100 p-6">
                     <div className="flex justify-between items-center mb-4">
                       <h4 className="font-bold text-slate-800 flex items-center gap-2">
