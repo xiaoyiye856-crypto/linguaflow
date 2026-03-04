@@ -122,17 +122,14 @@ export default function ArticleView() {
             </Button>
           </Link>
           <div className="flex items-center gap-4">
-            <div className="bg-white text-[#1e293b] font-bold px-4 py-1 rounded text-sm tracking-widest shadow-inner">
-              新闻
+            <div className="bg-amber-500 text-white font-bold px-4 py-1 rounded text-sm tracking-widest shadow-inner">
+              澳洲文化
             </div>
             <div className="hidden md:block h-6 w-px bg-slate-600"></div>
             <span className="font-serif italic text-sm text-slate-300 tracking-wide hidden sm:block">
-              Daily Reading & Efficient Vocabulary
+              深入了解澳洲文化与生活
             </span>
           </div>
-        </div>
-        <div className="text-sm font-mono tracking-widest text-slate-300 font-medium">
-          DATE: {new Date(article.created_date).toLocaleDateString().replace(/\//g, '.')}
         </div>
       </div>
 
