@@ -145,9 +145,7 @@ export default function ArticleView() {
             <div className="mb-12 relative group">
               <img src={article.image_url} alt={article.title} className="w-full max-h-[500px] object-cover bg-slate-100 shadow-sm" />
               <div className="absolute inset-0 ring-1 ring-inset ring-black/5" />
-              <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur text-white text-xs px-3 py-1 font-mono tracking-widest uppercase">
-                BREAKING NEWS
-              </div>
+
             </div>
           )}
 
