@@ -54,8 +54,8 @@ export default function Home() {
             <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
               <Newspaper className="w-6 h-6" />
             </div>
-            <h2 className="text-xl font-bold text-slate-900 mb-2">澳洲杂志期刊</h2>
-            <p className="text-slate-600 text-sm">双语阅读，自动提取核心词汇与文化拓展，培养语感。</p>
+            <h2 className="text-xl font-bold text-slate-900 mb-2">了解澳洲文化</h2>
+            <p className="text-slate-600 text-sm">精选文化必读文章，双语阅读，深入了解澳洲生活方式与文化背景。</p>
           </div>
         </Link>
       </div>
