@@ -16,36 +16,6 @@ export default function AussieSentences() {
 
   const sortedSentences = [...sentences].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
 
-  const toggleEditMode = () => {
-    if (!isEditingOrder) {
-      const initialOrders = {};
-      sentences.forEach((s, i) => { initialOrders[s.id] = s.sort_order || i; });
-      setOrders(initialOrders);
-    }
-    setIsEditingOrder(!isEditingOrder);
-  };
-
-  const handleSaveOrder = async () => {
-    setIsSaving(true);
-    try {
-      const updates = [];
-      for (const item of sentences) {
-        if (orders[item.id] !== undefined && orders[item.id] !== item.sort_order) {
-          updates.push(base44.entities.AussieSentence.update(item.id, { sort_order: Number(orders[item.id]) }));
-        }
-      }
-      if (updates.length > 0) {
-        await Promise.all(updates);
-        await refetch();
-      }
-      setIsEditingOrder(false);
-    } catch (e) {
-      console.error(e);
-      alert("Failed to save order");
-    } finally {
-      setIsSaving(false);
-    }
-  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 animate-in fade-in duration-500">
