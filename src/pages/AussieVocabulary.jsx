@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { useAussieVoice } from '@/components/useAussieVoice';
 
 export default function AussieVocabulary() {
-  const [loadingText, setLoadingText] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
+  const { speak } = useAussieVoice();
 
   const { data: vocab, isLoading } = useQuery({
     queryKey: ['aussie_vocab'],
@@ -17,23 +17,8 @@ export default function AussieVocabulary() {
 
   const sortedVocab = [...vocab].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
 
-  const playAudio = async (text, voice = 'nova') => {
-    setLoadingText(text);
-    try {
-      const res = await base44.functions.invoke('generateAudio', { text, voice });
-      if (res.data && res.data.audio) {
-        const audio = new Audio(res.data.audio);
-        audio.play();
-      }
-    } catch (e) {
-      console.error(e);
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-AU';
-      window.speechSynthesis.speak(utterance);
-    } finally {
-      setLoadingText(null);
-    }
+  const playAudio = (text) => {
+    speak(text, 'female');
   };
 
   const groupedVocab = React.useMemo(() => {
