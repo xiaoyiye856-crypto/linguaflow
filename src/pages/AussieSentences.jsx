@@ -77,8 +77,7 @@ export default function AussieSentences() {
       {mode === 'learn' && (
         <div className="bg-white shadow-xl rounded-b-3xl overflow-hidden">
           <div className="grid grid-cols-12 bg-[#00843D] text-white font-bold p-4 text-center">
-            {isEditingOrder && <div className="col-span-1">排序</div>}
-            <div className={`${isEditingOrder ? 'col-span-3' : 'col-span-4'} text-left pl-4`}>中文</div>
+            <div className="col-span-4 text-left pl-4">中文</div>
             <div className="col-span-3 text-left">你以为的</div>
             <div className="col-span-5 text-left pl-2">澳洲地道表达 👍</div>
           </div>
