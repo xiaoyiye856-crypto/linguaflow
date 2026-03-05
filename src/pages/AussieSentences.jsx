@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Sparkles, Edit, Save, Loader2, BookOpen, PenLine } from 'lucide-react';
+import { BookOpen, PenLine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SentencePractice from '@/components/practice/SentencePractice';
 
