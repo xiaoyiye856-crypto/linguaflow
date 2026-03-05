@@ -1,100 +1,70 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Play, Pause, Square, Loader2 } from "lucide-react";
-import { base44 } from '@/api/base44Client';
+import { useAussieVoice } from '@/components/useAussieVoice';
 
 export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundary }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const audioRef = useRef(null);
+  const indexRef = useRef(-1);
+  const stoppedRef = useRef(false);
+  const { speak, cancel } = useAussieVoice();
 
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
-  }, []);
-
-  const play = () => {
-    if (audioRef.current && audioRef.current.paused && audioRef.current.src) {
-      audioRef.current.play();
-      setIsPlaying(true);
-      return;
-    }
-
-    if (!paragraphs || paragraphs.length === 0) return;
-
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-    
-    let startIndex = currentIndex === -1 ? 0 : currentIndex;
-    speakParagraph(startIndex);
-  };
-
-  const speakParagraph = async (index) => {
-    if (index >= paragraphs.length) {
+  const speakParagraph = useCallback((index) => {
+    if (stoppedRef.current) return;
+    if (!paragraphs || index >= paragraphs.length) {
       setIsPlaying(false);
       setCurrentIndex(-1);
+      indexRef.current = -1;
       onParagraphChange(-1);
       return;
     }
 
     setCurrentIndex(index);
+    indexRef.current = index;
     onParagraphChange(index);
-    
-    const textToSpeak = paragraphs[index].en;
+
+    const textToSpeak = paragraphs[index]?.en;
     if (!textToSpeak) {
       speakParagraph(index + 1);
       return;
     }
 
     setIsLoading(true);
-    try {
-      const res = await base44.functions.invoke('generateAudio', { text: textToSpeak });
+    // Small delay to allow voices to be ready
+    setTimeout(() => {
       setIsLoading(false);
-      if (res.data && res.data.audio) {
-        const audio = new Audio(res.data.audio);
-        audioRef.current = audio;
-        setIsPlaying(true);
-        
-        audio.onended = () => {
-          if (onWordBoundary) onWordBoundary(-1, 0);
-          speakParagraph(index + 1);
-        };
+      if (stoppedRef.current) return;
+      speak(textToSpeak, 'female', () => {
+        if (!stoppedRef.current) {
+          speakParagraph(indexRef.current + 1);
+        }
+      });
+    }, 100);
+  }, [paragraphs, speak, onParagraphChange]);
 
-        audio.onerror = (e) => {
-          console.error("Audio playback error", e);
-          setIsPlaying(false);
-        };
-
-        audio.play();
-      }
-    } catch(e) {
-      console.error(e);
-      setIsLoading(false);
-      setIsPlaying(false);
-    }
+  const play = () => {
+    if (isPlaying) return;
+    stoppedRef.current = false;
+    const startIndex = currentIndex <= 0 ? 0 : currentIndex;
+    setIsPlaying(true);
+    speakParagraph(startIndex);
   };
 
   const pause = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
+    stoppedRef.current = true;
+    cancel();
     setIsPlaying(false);
   };
 
   const stop = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
+    stoppedRef.current = true;
+    cancel();
     setIsPlaying(false);
     setIsLoading(false);
     setCurrentIndex(-1);
+    indexRef.current = -1;
     onParagraphChange(-1);
     if (onWordBoundary) onWordBoundary(-1, 0);
   };
@@ -108,7 +78,7 @@ export default function TTSPlayer({ paragraphs, onParagraphChange, onWordBoundar
         <div className="flex items-center justify-between mb-2">
           <div className="text-sm font-bold tracking-wider text-slate-200">ARTICLE AUDIO</div>
           <div className="flex bg-slate-800 rounded-md px-2 py-0.5 border border-slate-700">
-            <span className="text-[10px] text-emerald-400 font-bold">OpenAI Voice</span>
+            <span className="text-[10px] text-emerald-400 font-bold">🇦🇺 Aussie Voice</span>
           </div>
         </div>
         <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
