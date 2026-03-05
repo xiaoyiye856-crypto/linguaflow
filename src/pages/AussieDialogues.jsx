@@ -89,7 +89,7 @@ export default function AussieDialogues() {
   const playAudio = async (text, gender) => {
     setLoadingText(text);
     try {
-      const voice = gender === 'male' ? 'onyx' : 'nova';
+      const voice = gender === 'male' ? 'onyx' : gender === 'female' ? 'nova' : 'nova';
       const res = await base44.functions.invoke('generateAudio', { text, voice });
       if (res.data && res.data.audio) {
         const audio = new Audio(res.data.audio);
@@ -206,7 +206,7 @@ export default function AussieDialogues() {
                           <div className={`text-left w-full bg-white p-4 rounded-xl transition-all border shadow-sm relative ${loadingText === line.en ? 'border-blue-400 ring-2 ring-blue-100 scale-[1.02]' : 'border-slate-200'}`}>
                             <div className="text-lg font-bold text-slate-900 mb-2 flex items-start justify-between gap-4">
                               <HighlightedText text={line.en} notes={dialogue.admin_notes || []} />
-                              <button onClick={() => playAudio(line.en, line.gender || (idx % 2 === 0 ? 'female' : 'male'))} className="shrink-0 mt-1 hover:scale-110 transition-transform">
+                              <button onClick={() => playAudio(line.en, line.gender || (idx % 2 === 0 ? 'male' : 'female'))} className="shrink-0 mt-1 hover:scale-110 transition-transform">
                                 {loadingText === line.en ? (
                                   <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
                                 ) : (
