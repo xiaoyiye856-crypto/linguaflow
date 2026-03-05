@@ -194,15 +194,11 @@ export default function AussieDialogues() {
                           </span>
                         </div>
                         <div className="flex-1 group">
-                          <div className={`text-left w-full bg-white p-4 rounded-xl transition-all border shadow-sm relative ${loadingText === line.en ? 'border-blue-400 ring-2 ring-blue-100 scale-[1.02]' : 'border-slate-200'}`}>
+                          <div className={`text-left w-full bg-white p-4 rounded-xl transition-all border shadow-sm relative ${playingText === line.en ? 'border-blue-400 ring-2 ring-blue-100 scale-[1.02]' : 'border-slate-200'}`}>
                             <div className="text-lg font-bold text-slate-900 mb-2 flex items-start justify-between gap-4">
                               <HighlightedText text={line.en} notes={dialogue.admin_notes || []} />
                               <button onClick={() => playAudio(line.en, line.gender ? line.gender : (idx % 2 === 0 ? 'male' : 'female'))} className="shrink-0 mt-1 hover:scale-110 transition-transform">
-                                {loadingText === line.en ? (
-                                  <Loader2 className="w-5 h-5 text-blue-500 animate-spin" />
-                                ) : (
-                                  <Play className="w-5 h-5 text-blue-500 opacity-60 group-hover:opacity-100 transition-opacity" />
-                                )}
+                                <Play className={`w-5 h-5 transition-opacity ${playingText === line.en ? 'text-blue-600 opacity-100' : 'text-blue-500 opacity-60 group-hover:opacity-100'}`} fill={playingText === line.en ? 'currentColor' : 'none'} />
                               </button>
                             </div>
                             <div className="text-slate-600 text-sm">{line.zh}</div>
