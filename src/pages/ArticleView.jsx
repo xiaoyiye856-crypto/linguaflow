@@ -239,12 +239,8 @@ export default function ArticleView() {
                         <span className="text-sm font-mono opacity-80 tracking-wide">[{v.phonetic}]</span>
                       </div>
                       <button onClick={() => playWord(v.word)} className="p-2 rounded-full hover:bg-white/20 transition-colors">
-                        {loadingWord === v.word ? (
-                          <Loader2 className="w-5 h-5 animate-spin opacity-80" />
-                        ) : (
-                          <Volume2 className="w-5 h-5 opacity-80 hover:opacity-100" />
-                        )}
-                      </button>
+                           <Volume2 className={`w-5 h-5 ${playingWord === v.word ? 'opacity-100 text-yellow-300' : 'opacity-80 hover:opacity-100'}`} />
+                         </button>
                     </div>
                     <div className="px-5 py-3 bg-[#4c5c7d] text-white">
                       <span className="text-sm font-bold opacity-90 mr-2 bg-white/20 px-1.5 py-0.5 rounded">{v.part_of_speech}</span>
