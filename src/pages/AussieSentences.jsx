@@ -89,17 +89,7 @@ export default function AussieSentences() {
               {sortedSentences.map((item) => (
                 <div key={item.id} className="p-4 md:p-6 hover:bg-slate-50 transition-colors">
                   <div className="grid grid-cols-12 items-center gap-2">
-                    {isEditingOrder && (
-                      <div className="col-span-1 pr-2">
-                        <input 
-                          type="number" 
-                          value={orders[item.id] ?? ''} 
-                          onChange={(e) => setOrders({...orders, [item.id]: e.target.value})}
-                          className="w-full p-1 border rounded text-center text-sm font-mono"
-                        />
-                      </div>
-                    )}
-                    <div className={`${isEditingOrder ? 'col-span-3' : 'col-span-4'} font-bold text-slate-800 text-sm md:text-base pr-2`}>
+                    <div className="col-span-4 font-bold text-slate-800 text-sm md:text-base pr-2">
                       {item.chinese}
                     </div>
                     <div className="col-span-3 text-slate-400 text-sm md:text-base pr-2">
