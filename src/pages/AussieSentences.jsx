@@ -6,9 +6,6 @@ import { Button } from '@/components/ui/button';
 import SentencePractice from '@/components/practice/SentencePractice';
 
 export default function AussieSentences() {
-  const [isEditingOrder, setIsEditingOrder] = useState(false);
-  const [orders, setOrders] = useState({});
-  const [isSaving, setIsSaving] = useState(false);
   const [mode, setMode] = useState(null); // null = choose, 'learn' or 'practice'
 
   const { data: sentences, isLoading, refetch } = useQuery({
