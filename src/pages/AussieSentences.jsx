@@ -25,21 +25,7 @@ export default function AussieSentences() {
         </h1>
         <p className="text-lg opacity-95 font-medium">对比"你以为的"和"地道表达"，解决生活中的高频尴尬场景</p>
         
-        {mode === 'learn' && (
-          <div className="absolute top-4 right-4 flex gap-2">
-            {isEditingOrder ? (
-              <Button size="sm" variant="secondary" onClick={handleSaveOrder} disabled={isSaving} className="font-bold">
-                {isSaving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                Save Order
-              </Button>
-            ) : (
-              <Button size="sm" variant="secondary" onClick={toggleEditMode} className="font-bold opacity-80 hover:opacity-100">
-                <Edit className="w-4 h-4 mr-2" />
-                Edit Order
-              </Button>
-            )}
-          </div>
-        )}
+
       </div>
 
       {/* Mode selector */}
