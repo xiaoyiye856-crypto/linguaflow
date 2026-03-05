@@ -8,7 +8,7 @@ const openai = new OpenAI({
 
 Deno.serve(async (req) => {
     try {
-        const { text, voice = "fable" } = await req.json();
+        const { text, voice = "nova" } = await req.json();
         
         if (!text) {
             return Response.json({ error: 'Text is required' }, { status: 400 });
@@ -18,6 +18,7 @@ Deno.serve(async (req) => {
             model: "tts-1-hd",
             voice: voice,
             input: text,
+            speed: 0.95,
         });
 
         const buffer = await mp3.arrayBuffer();
