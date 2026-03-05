@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ExternalLink, Edit3, Volume2, Loader2 } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Edit3, Volume2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import TTSPlayer from '@/components/TTSPlayer';
+import { useAussieVoice } from '@/components/useAussieVoice';
 
 function HighlightedText({ text, vocabulary, isActive, activeCharIndex, activeCharLength }) {
   if (!text) return null;

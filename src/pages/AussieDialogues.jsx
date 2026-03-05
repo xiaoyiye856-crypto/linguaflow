@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Play, Loader2, Sparkles, Folder, ArrowLeft, Volume2, Edit, X, Trash2 } from 'lucide-react';
+import { Play, Sparkles, Folder, ArrowLeft, Edit, X, Trash2 } from 'lucide-react';
 import DialoguePractice from '@/components/practice/DialoguePractice';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { useAussieVoice } from '@/components/useAussieVoice';
 
 const HighlightedText = ({ text, notes }) => {
   if (!notes || notes.length === 0 || !text) return <span>{text}</span>;
