@@ -239,18 +239,27 @@ export default function ArticleView() {
                   </div>
                   
                   <div className="space-y-4">
-                    {article.vocabulary.map((v, i) => (
-                      <div key={i} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
-                        <div className="px-5 py-3 border-b border-slate-100 flex flex-col gap-1 bg-[#4c5c7d] text-white">
-                          <span className="font-bold text-xl font-serif">{v.word}</span>
-                          <span className="text-sm font-mono opacity-80 tracking-wide">[{v.phonetic}]</span>
-                        </div>
-                        <div className="px-5 py-3 bg-[#4c5c7d] text-white">
-                          <span className="text-sm font-bold opacity-90 mr-2 bg-white/20 px-1.5 py-0.5 rounded">{v.part_of_speech}</span>
-                          <span className="text-base font-medium opacity-95">{v.meaning}</span>
-                        </div>
+                  {article.vocabulary.map((v, i) => (
+                  <div key={i} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+                    <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between gap-1 bg-[#4c5c7d] text-white">
+                      <div className="flex flex-col gap-1">
+                        <span className="font-bold text-xl font-serif">{v.word}</span>
+                        <span className="text-sm font-mono opacity-80 tracking-wide">[{v.phonetic}]</span>
                       </div>
-                    ))}
+                      <button onClick={() => playWord(v.word)} className="p-2 rounded-full hover:bg-white/20 transition-colors">
+                        {loadingWord === v.word ? (
+                          <Loader2 className="w-5 h-5 animate-spin opacity-80" />
+                        ) : (
+                          <Volume2 className="w-5 h-5 opacity-80 hover:opacity-100" />
+                        )}
+                      </button>
+                    </div>
+                    <div className="px-5 py-3 bg-[#4c5c7d] text-white">
+                      <span className="text-sm font-bold opacity-90 mr-2 bg-white/20 px-1.5 py-0.5 rounded">{v.part_of_speech}</span>
+                      <span className="text-base font-medium opacity-95">{v.meaning}</span>
+                    </div>
+                  </div>
+                  ))}
                   </div>
                 </div>
               )}
