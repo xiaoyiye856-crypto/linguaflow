@@ -1,31 +1,6 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.18';
-import OpenAI from 'npm:openai';
-import { encodeBase64 } from "jsr:@std/encoding/base64";
-
-const openai = new OpenAI({
-    apiKey: Deno.env.get("OPENAI_API_KEY"),
-});
-
+// This function is no longer the primary audio source.
+// Audio is now handled client-side via Web Speech API.
+// Keeping as a passthrough for backward compatibility.
 Deno.serve(async (req) => {
-    try {
-        const { text, voice = "nova" } = await req.json();
-        
-        if (!text) {
-            return Response.json({ error: 'Text is required' }, { status: 400 });
-        }
-
-        const mp3 = await openai.audio.speech.create({
-            model: "tts-1-hd",
-            voice: voice,
-            input: text,
-            speed: 0.95,
-        });
-
-        const buffer = await mp3.arrayBuffer();
-        const base64 = encodeBase64(new Uint8Array(buffer));
-
-        return Response.json({ audio: `data:audio/mpeg;base64,${base64}` });
-    } catch (e) {
-        return Response.json({ error: e.message }, { status: 500 });
-    }
+    return Response.json({ error: 'Use client-side TTS instead' }, { status: 400 });
 });
