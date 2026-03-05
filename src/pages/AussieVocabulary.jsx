@@ -80,8 +80,8 @@ export default function AussieVocabulary() {
                   <div>
                     <div className="flex items-end gap-3 mb-1">
                       <h3 className="text-2xl font-bold text-[#1e293b]">{item.word}</h3>
-                      <button onClick={() => playAudio(item.word)} disabled={loadingText === item.word} className="text-slate-400 hover:text-[#00843D] mb-1 transition-colors">
-                        {loadingText === item.word ? <Loader2 className="w-5 h-5 animate-spin" /> : <Volume2 className="w-5 h-5" />}
+                      <button onClick={() => playAudio(item.word)} className="text-slate-400 hover:text-[#00843D] mb-1 transition-colors">
+                        <Volume2 className="w-5 h-5" />
                       </button>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
