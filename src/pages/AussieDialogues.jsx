@@ -59,8 +59,9 @@ const HighlightedText = ({ text, notes }) => {
 };
 
 export default function AussieDialogues() {
-  const [loadingText, setLoadingText] = useState(null);
+  const [playingText, setPlayingText] = useState(null);
   const [activeCategory, setActiveCategory] = useState(null);
+  const { speak, cancel } = useAussieVoice();
   
   const [editingAdminDialogueId, setEditingAdminDialogueId] = useState(null);
   const [adminNotesForm, setAdminNotesForm] = useState([]);
