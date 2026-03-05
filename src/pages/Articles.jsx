@@ -61,7 +61,7 @@ export default function Articles() {
         <div>
           <h1 className="text-4xl font-black text-slate-900 mb-2 flex items-center gap-3">
             <BookOpen className="w-10 h-10 text-amber-600" />
-            了解澳洲文化
+            英语文章—澳洲文化
           </h1>
           <p className="text-lg text-slate-500">精选文章，深入了解澳洲文化与生活方式，配套双语阅读与词汇讲解</p>
         </div>
