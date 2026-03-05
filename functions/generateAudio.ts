@@ -8,14 +8,14 @@ const openai = new OpenAI({
 
 Deno.serve(async (req) => {
     try {
-        const { text, voice = "nova" } = await req.json();
+        const { text, voice = "fable" } = await req.json();
         
         if (!text) {
             return Response.json({ error: 'Text is required' }, { status: 400 });
         }
 
         const mp3 = await openai.audio.speech.create({
-            model: "tts-1",
+            model: "tts-1-hd",
             voice: voice,
             input: text,
         });
