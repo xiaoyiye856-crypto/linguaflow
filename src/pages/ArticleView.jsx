@@ -92,21 +92,12 @@ export default function ArticleView() {
   const [activeParagraph, setActiveParagraph] = useState(-1);
   const [activeCharIndex, setActiveCharIndex] = useState(-1);
   const [activeCharLength, setActiveCharLength] = useState(0);
-  const [loadingWord, setLoadingWord] = useState(null);
+  const [playingWord, setPlayingWord] = useState(null);
+  const { speak } = useAussieVoice();
 
-  const playWord = async (word) => {
-    setLoadingWord(word);
-    try {
-      const res = await base44.functions.invoke('generateAudio', { text: word, voice: 'nova' });
-      if (res.data && res.data.audio) {
-        const audio = new Audio(res.data.audio);
-        audio.play();
-      }
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoadingWord(null);
-    }
+  const playWord = (word) => {
+    setPlayingWord(word);
+    speak(word, 'female', () => setPlayingWord(null));
   };
 
   const { data: article, isLoading } = useQuery({
