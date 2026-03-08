@@ -65,7 +65,7 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card) => (
           <Link key={card.to} to={createPageUrl(card.to)} className="group">
-            <div className={`bg-gradient-to-br ${card.gradient} rounded-3xl p-6 h-full shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col`}>
+            <div className={`bg-gradient-to-br ${card.gradient} rounded-3xl p-6 h-full shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col ring-1 ring-white/30 ring-inset outline outline-2 outline-white/10`}>
               <div className="flex items-start justify-between mb-5">
                 <div className={`w-12 h-12 ${card.iconBg} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
                   {card.icon}
