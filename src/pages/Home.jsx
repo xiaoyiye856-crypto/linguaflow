@@ -39,7 +39,7 @@ const cards = [
     icon: <Newspaper className="w-7 h-7 text-white" />,
     title: '英语文章—澳洲文化',
     desc: '精选文化必读文章，双语阅读，深入了解澳洲生活方式与文化背景。',
-    gradient: 'from-[#d97706] to-[#f59e0b]',
+    gradient: 'from-[#ca8a04] to-[#facc15]',
     iconBg: 'bg-white/20',
     badge: '文化阅读',
     badgeColor: 'bg-white/20 text-white',
