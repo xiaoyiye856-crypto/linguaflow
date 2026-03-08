@@ -1,10 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
-import { Play, Sparkles, Folder, ArrowLeft, Edit, X, Trash2 } from 'lucide-react';
+import { Play, Sparkles, Folder, ArrowLeft } from 'lucide-react';
 import DialoguePractice from '@/components/practice/DialoguePractice';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useAussieVoice } from '@/components/useAussieVoice';
 
@@ -63,29 +62,11 @@ export default function AussieDialogues() {
   const [activeCategory, setActiveCategory] = useState(null);
   const { speak, cancel } = useAussieVoice();
   
-  const [editingAdminDialogueId, setEditingAdminDialogueId] = useState(null);
-  const [adminNotesForm, setAdminNotesForm] = useState([]);
-
-  const { data: user } = useQuery({
-    queryKey: ['user'],
-    queryFn: () => base44.auth.me().catch(() => null)
-  });
-
-  const { data: dialogues, isLoading, refetch } = useQuery({
+  const { data: dialogues, isLoading } = useQuery({
     queryKey: ['aussie_dialogues'],
     queryFn: () => base44.entities.AussieDialogue.list(),
     initialData: []
   });
-
-  const handleSaveAdminNotes = async (dialogueId) => {
-    try {
-      await base44.entities.AussieDialogue.update(dialogueId, { admin_notes: adminNotesForm });
-      await refetch();
-      setEditingAdminDialogueId(null);
-    } catch (e) {
-      alert('保存失败');
-    }
-  };
 
   const playAudio = (text, gender) => {
     if (playingText === text) {
