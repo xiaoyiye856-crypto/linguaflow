@@ -53,13 +53,13 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card) => (
           <Link key={card.to} to={createPageUrl(card.to)} className="group">
-            <div className={`bg-gradient-to-br ${card.gradient} rounded-3xl p-6 h-full shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col`}>
-              <div className={`w-14 h-14 ${card.iconBg} rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform backdrop-blur-sm`}>
+            <div className={`rounded-3xl p-6 h-full shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col border ${card.green ? 'bg-[#00843D] border-[#00843D]' : 'bg-white border-slate-200'}`}>
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform ${card.green ? 'bg-white/20' : 'bg-[#00843D]/10'}`}>
                 {card.icon}
               </div>
-              <h2 className="text-xl font-bold text-white mb-3 leading-snug">{card.title}</h2>
-              <p className="text-white/80 text-sm leading-relaxed flex-1">{card.desc}</p>
-              <div className="mt-5 text-white/90 text-sm font-bold flex items-center gap-1">
+              <h2 className={`text-xl font-bold mb-3 leading-snug ${card.green ? 'text-white' : 'text-slate-900'}`}>{card.title}</h2>
+              <p className={`text-sm leading-relaxed flex-1 ${card.green ? 'text-white/80' : 'text-slate-500'}`}>{card.desc}</p>
+              <div className={`mt-5 text-sm font-bold flex items-center gap-1 ${card.green ? 'text-white/90' : 'text-[#00843D]'}`}>
                 立即学习 →
               </div>
             </div>

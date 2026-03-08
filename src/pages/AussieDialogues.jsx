@@ -210,77 +210,21 @@ export default function AussieDialogues() {
 
                   <DialoguePractice dialogue={dialogue} />
 
-                  <div className="bg-white border-t border-slate-100 p-6">
-                    <div className="flex justify-between items-center mb-4">
-                      <h4 className="font-bold text-slate-800 flex items-center gap-2">
+                  {dialogue.admin_notes && dialogue.admin_notes.length > 0 && (
+                    <div className="bg-white border-t border-slate-100 p-6">
+                      <h4 className="font-bold text-slate-800 flex items-center gap-2 mb-4">
                         🌟 重点词汇解析
                       </h4>
-                      {user?.role === 'admin' && (
-                        <Button size="sm" variant="outline" onClick={() => {
-                          setEditingAdminDialogueId(dialogue.id);
-                          setAdminNotesForm(dialogue.admin_notes || []);
-                        }}>
-                          <Edit className="w-4 h-4 mr-1" /> 编辑高亮重点
-                        </Button>
-                      )}
-                    </div>
-                    
-                    {editingAdminDialogueId === dialogue.id && (
-                      <div className="bg-amber-50 p-4 rounded-xl mb-4 border border-amber-200">
-                        <div className="font-bold text-amber-900 mb-3 text-sm flex justify-between">
-                          <span>编辑官方高亮词汇 (所有人可见)</span>
-                          <button onClick={() => setEditingAdminDialogueId(null)}><X className="w-4 h-4" /></button>
-                        </div>
-                        <div className="space-y-3">
-                          {adminNotesForm.map((note, i) => (
-                            <div key={i} className="flex gap-2">
-                              <Input 
-                                value={note.word} 
-                                onChange={e => {
-                                  const newForm = [...adminNotesForm];
-                                  newForm[i].word = e.target.value;
-                                  setAdminNotesForm(newForm);
-                                }} 
-                                placeholder="英文词汇" 
-                                className="w-1/3 bg-white"
-                              />
-                              <Input 
-                                value={note.note} 
-                                onChange={e => {
-                                  const newForm = [...adminNotesForm];
-                                  newForm[i].note = e.target.value;
-                                  setAdminNotesForm(newForm);
-                                }} 
-                                placeholder="解析与备注" 
-                                className="flex-1 bg-white"
-                              />
-                              <Button size="icon" variant="ghost" onClick={() => {
-                                setAdminNotesForm(adminNotesForm.filter((_, idx) => idx !== i));
-                              }} className="text-red-500 hover:bg-red-50"><Trash2 className="w-4 h-4" /></Button>
-                            </div>
-                          ))}
-                          <Button size="sm" variant="outline" onClick={() => setAdminNotesForm([...adminNotesForm, { word: '', note: '' }])} className="w-full border-dashed border-amber-300 text-amber-800 hover:bg-amber-100">
-                            + 新增一个高亮词
-                          </Button>
-                          <Button size="sm" onClick={() => handleSaveAdminNotes(dialogue.id)} className="w-full bg-amber-600 hover:bg-amber-700 text-white mt-2">
-                            保存高亮与解析
-                          </Button>
-                        </div>
+                      <div className="grid gap-3">
+                        {dialogue.admin_notes.map((n, i) => (
+                          <div key={i} className="bg-amber-50 text-amber-900 px-4 py-3 rounded-xl border border-amber-100 flex flex-col sm:flex-row sm:items-baseline gap-2">
+                            <span className="font-black text-amber-700 min-w-[120px]">{n.word}</span>
+                            <span className="text-sm opacity-90">{n.note}</span>
+                          </div>
+                        ))}
                       </div>
-                    )}
-
-                    <div className="grid gap-3">
-                      {dialogue.admin_notes?.map((n, i) => (
-                        <div key={i} className="bg-amber-50 text-amber-900 px-4 py-3 rounded-xl border border-amber-100 flex flex-col sm:flex-row sm:items-baseline gap-2">
-                          <span className="font-black text-amber-700 min-w-[120px]">{n.word}</span>
-                          <span className="text-sm opacity-90">{n.note}</span>
-                        </div>
-                      ))}
-                      {(!dialogue.admin_notes || dialogue.admin_notes.length === 0) && !editingAdminDialogueId && (
-                        <div className="text-sm text-slate-400">暂无重点词汇与解析。</div>
-                      )}
                     </div>
-                  </div>
+                  )}
 
                 </AccordionContent>
               </AccordionItem>
