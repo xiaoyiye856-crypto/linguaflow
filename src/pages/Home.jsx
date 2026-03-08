@@ -6,35 +6,31 @@ import { MessageCircle, BookOpen, Quote, Sparkles, Newspaper } from 'lucide-reac
 const cards = [
   {
     to: 'AussieSentences',
-    icon: <Quote className="w-7 h-7 text-white" />,
+    icon: <Quote className="w-7 h-7 text-[#00843D]" />,
     title: '100句地道澳洲口语',
     desc: '对比"你以为的"和"地道表达"，解决生活中的高频尴尬场景。',
-    gradient: 'from-[#00843D] to-[#FFCD00]',
-    iconBg: 'bg-white/20',
+    green: true,
   },
   {
     to: 'AussieDialogues',
     icon: <MessageCircle className="w-7 h-7 text-white" />,
     title: '50个实用主题 Small Talk 对话',
     desc: '咖啡店、超市、职场闲聊...各种生活情景对话一网打尽。',
-    gradient: 'from-[#00843D] to-[#FFCD00]',
-    iconBg: 'bg-white/20',
+    green: false,
   },
   {
     to: 'AussieVocabulary',
-    icon: <BookOpen className="w-7 h-7 text-white" />,
+    icon: <BookOpen className="w-7 h-7 text-[#00843D]" />,
     title: '100个日常核心短语',
     desc: '不背无用词汇，精选澳洲日常高频短语，辅以地道例句练习。',
-    gradient: 'from-[#00843D] to-[#FFCD00]',
-    iconBg: 'bg-white/20',
+    green: true,
   },
   {
     to: 'Articles',
     icon: <Newspaper className="w-7 h-7 text-white" />,
     title: '英语文章—澳洲文化',
     desc: '精选文化必读文章，双语阅读，深入了解澳洲生活方式与文化背景。',
-    gradient: 'from-[#00843D] to-[#FFCD00]',
-    iconBg: 'bg-white/20',
+    green: false,
   },
 ];
 
