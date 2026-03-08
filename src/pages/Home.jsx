@@ -57,7 +57,7 @@ export default function Home() {
           Master Authentic <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00843D] to-[#FFCD00]">Aussie English</span>
         </h1>
         <p className="text-xl text-slate-600 max-w-2xl mx-auto mb-3">
-          全面覆盖日常场景，摆脱"中式英语"，教你最地道的澳洲本土表达。配套真人发音，沉浸式跟读。
+          全面覆盖日常场景，摆脱"中式英语"，教你最地道的澳洲本土表达。配套音频朗读，沉浸式跟读练习。
         </p>
         <p className="text-sm text-slate-400 font-medium">© 澳洲阿浩学长</p>
       </div>
