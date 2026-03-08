@@ -53,7 +53,7 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card) => (
           <Link key={card.to} to={createPageUrl(card.to)} className="group">
-            <div className={`rounded-3xl p-6 h-full shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col border-2 ${card.green ? 'bg-[#00843D] border-[#00843D]' : 'bg-white border-[#00843D]'}`}>
+            <div className={`rounded-3xl p-6 h-full shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col border-2 ${card.green ? 'bg-gradient-to-br from-[#00843D] to-[#005a2b] border-[#00843D]' : 'bg-white border-[#00843D]'}`}>
               <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform ${card.green ? 'bg-white/20' : 'bg-[#00843D]/10'}`}>
                 {card.icon}
               </div>
