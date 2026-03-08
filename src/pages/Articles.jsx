@@ -5,6 +5,18 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { BookOpen, ArrowRight } from 'lucide-react';
 
+// Note: TITLE_ZH is defined in ArticleView, not here
+const TITLE_ZH = {
+  'The Art of Greeting in Australia': '澳洲问候的艺术',
+  'Understanding Australian Communication Styles': '了解澳洲沟通方式',
+  'Understanding Australian Culture': '了解澳洲文化',
+  "Australia Culture:Helpful Do's and Don'ts": '澳洲文化：行为守则',
+  'Navigating Etiquette in Australia: A Friendly Guide': '澳洲礼仪指南',
+  'Multiculturalism and Identity in Australia': '澳洲的多元文化与身份认同',
+  "Understanding Australia's Indigenous Heritage": '了解澳洲原住民文化遗产',
+  'The Evolution of Family in Australia': '澳洲家庭结构的演变',
+};
+
 export default function Articles() {
   const { data: articles, isLoading } = useQuery({
     queryKey: ['articles'],
