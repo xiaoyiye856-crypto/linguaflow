@@ -74,7 +74,7 @@ export default function Home() {
                   {card.badge}
                 </span>
               </div>
-              <h2 className="text-lg font-bold mb-2 leading-snug">
+              <h2 className="text-xl font-bold mb-2 leading-snug">
                 <span className="bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-lg text-white drop-shadow">{card.title}</span>
               </h2>
               <p className="text-sm text-white/75 leading-relaxed flex-1">{card.desc}</p>
