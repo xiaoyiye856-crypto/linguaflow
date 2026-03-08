@@ -58,9 +58,12 @@ export default function Articles() {
                   )}
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2 group-hover:text-amber-600 transition-colors leading-snug">
+                  <h3 className="text-lg font-bold text-slate-900 mb-1 line-clamp-2 group-hover:text-amber-600 transition-colors leading-snug">
                     {article.title}
                   </h3>
+                  {TITLE_ZH[article.title] && (
+                    <p className="text-sm text-slate-500 mb-3">{TITLE_ZH[article.title]}</p>
+                  )}
                   <div className="mt-auto flex items-center text-amber-600 font-bold text-sm bg-amber-50 w-fit px-3 py-1.5 rounded-full">
                     阅读文章 <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </div>
