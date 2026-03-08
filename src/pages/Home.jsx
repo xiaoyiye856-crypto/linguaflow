@@ -6,31 +6,43 @@ import { MessageCircle, BookOpen, Quote, Sparkles, Newspaper } from 'lucide-reac
 const cards = [
   {
     to: 'AussieSentences',
-    icon: <Quote className="w-7 h-7 text-[#00843D]" />,
+    icon: <Quote className="w-7 h-7 text-white" />,
     title: '100句地道澳洲口语',
     desc: '对比"你以为的"和"地道表达"，解决生活中的高频尴尬场景。',
-    green: true,
+    gradient: 'from-[#00843D] to-[#00b359]',
+    iconBg: 'bg-white/20',
+    badge: '口语纠错',
+    badgeColor: 'bg-white/20 text-white',
   },
   {
     to: 'AussieDialogues',
     icon: <MessageCircle className="w-7 h-7 text-white" />,
-    title: '50个实用主题 Small Talk 对话',
+    title: '50个实用 Small Talk 对话',
     desc: '咖啡店、超市、职场闲聊...各种生活情景对话一网打尽。',
-    green: false,
+    gradient: 'from-[#1a6fa8] to-[#2a9fd6]',
+    iconBg: 'bg-white/20',
+    badge: '情景对话',
+    badgeColor: 'bg-white/20 text-white',
   },
   {
     to: 'AussieVocabulary',
-    icon: <BookOpen className="w-7 h-7 text-[#00843D]" />,
+    icon: <BookOpen className="w-7 h-7 text-white" />,
     title: '100个日常核心短语',
     desc: '不背无用词汇，精选澳洲日常高频短语，辅以地道例句练习。',
-    green: true,
+    gradient: 'from-[#7c3aed] to-[#a855f7]',
+    iconBg: 'bg-white/20',
+    badge: '核心短语',
+    badgeColor: 'bg-white/20 text-white',
   },
   {
     to: 'Articles',
     icon: <Newspaper className="w-7 h-7 text-white" />,
     title: '英语文章—澳洲文化',
     desc: '精选文化必读文章，双语阅读，深入了解澳洲生活方式与文化背景。',
-    green: false,
+    gradient: 'from-[#d97706] to-[#f59e0b]',
+    iconBg: 'bg-white/20',
+    badge: '文化阅读',
+    badgeColor: 'bg-white/20 text-white',
   },
 ];
 
@@ -53,14 +65,19 @@ export default function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {cards.map((card) => (
           <Link key={card.to} to={createPageUrl(card.to)} className="group">
-            <div className={`rounded-3xl p-6 h-full shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col border-2 ${card.green ? 'bg-gradient-to-br from-[#00843D] to-[#34a866] border-[#00843D]' : 'bg-white border-[#00843D]'}`}>
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform ${card.green ? 'bg-white/20' : 'bg-[#00843D]/10'}`}>
-                {card.icon}
+            <div className={`bg-gradient-to-br ${card.gradient} rounded-3xl p-6 h-full shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col`}>
+              <div className="flex items-start justify-between mb-5">
+                <div className={`w-12 h-12 ${card.iconBg} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                  {card.icon}
+                </div>
+                <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${card.badgeColor}`}>
+                  {card.badge}
+                </span>
               </div>
-              <h2 className={`text-xl font-bold mb-3 leading-snug ${card.green ? 'text-white' : 'text-slate-900'}`}>{card.title}</h2>
-              <p className={`text-sm leading-relaxed flex-1 ${card.green ? 'text-white/80' : 'text-slate-500'}`}>{card.desc}</p>
-              <div className={`mt-5 text-sm font-bold flex items-center gap-1 ${card.green ? 'text-white/90' : 'text-[#00843D]'}`}>
-                立即学习 →
+              <h2 className="text-lg font-bold text-white mb-2 leading-snug">{card.title}</h2>
+              <p className="text-sm text-white/75 leading-relaxed flex-1">{card.desc}</p>
+              <div className="mt-5 text-sm font-bold text-white flex items-center gap-1 group-hover:gap-2 transition-all">
+                立即学习 <span className="text-base">→</span>
               </div>
             </div>
           </Link>
