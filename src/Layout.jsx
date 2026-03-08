@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Globe, Home, Quote, MessageCircle, BookOpen, Wand2 } from 'lucide-react';
+import { Globe, Home, Quote, MessageCircle, BookOpen } from 'lucide-react';
 
 export default function Layout({ children }) {
   return (
