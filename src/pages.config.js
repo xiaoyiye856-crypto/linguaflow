@@ -47,30 +47,14 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import ArticleView from './pages/ArticleView';
-import Articles from './pages/Articles';
-import AussieDialogues from './pages/AussieDialogues';
-import AussieGenerator from './pages/AussieGenerator';
-import AussieSentences from './pages/AussieSentences';
-import AussieVocabulary from './pages/AussieVocabulary';
-import Generator from './pages/Generator';
 import Home from './pages/Home';
-import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "ArticleView": ArticleView,
-    "Articles": Articles,
-    "AussieDialogues": AussieDialogues,
-    "AussieGenerator": AussieGenerator,
-    "AussieSentences": AussieSentences,
-    "AussieVocabulary": AussieVocabulary,
-    "Generator": Generator,
     "Home": Home,
 }
 
 export const pagesConfig = {
     mainPage: "Home",
     Pages: PAGES,
-    Layout: __Layout,
 };

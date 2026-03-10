@@ -59,7 +59,7 @@ export default function Home() {
         <p className="text-lg text-slate-500 max-w-2xl mx-auto mb-3 leading-relaxed">
           全面覆盖日常场景，摆脱"中式英语"，教你最地道的澳洲本土表达。配套音频朗读，沉浸式跟读练习。
         </p>
-        <p className="text-sm text-slate-400 mb-12">© 澳洲阿浩学长</p>
+        <p className="text-sm text-slate-400 mb-12">© 南半球小课堂</p>
 
         {/* Stats row */}
         <div className="flex justify-center gap-8 md:gap-16 mb-16">
