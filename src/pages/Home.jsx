@@ -64,6 +64,8 @@ export default function Home() {
           🦘 专为澳洲华人打造 · Made for Chinese Australians
         </div>
 
+
+
         {/* Main Title */}
         <h1 className="text-6xl md:text-7xl font-black mb-4 tracking-tight">
           <span className="text-slate-900">G</span>
