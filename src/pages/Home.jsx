@@ -44,12 +44,12 @@ const cards = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#0f1f0f] text-white overflow-hidden relative">
+    <div className="min-h-screen bg-[#f7f9f4] text-slate-900 overflow-hidden relative">
 
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_#1a3a1a_0%,_#0f1f0f_60%)]" />
-        <div className="absolute top-10 right-10 w-64 h-64 bg-[#FFCD00]/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_#d1fae5_0%,_#f7f9f4_60%)]" />
+        <div className="absolute top-10 right-10 w-64 h-64 bg-[#FFCD00]/20 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-[#00843D]/10 rounded-full blur-3xl" />
         {/* Decorative dots pattern */}
         <div className="absolute top-0 right-0 w-1/2 h-full opacity-5"
