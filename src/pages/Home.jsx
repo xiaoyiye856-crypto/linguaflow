@@ -88,8 +88,8 @@ export default function Home() {
             { num: '100+', label: '核心短语' },
           ].map((s) => (
             <div key={s.label} className="text-center">
-              <div className="text-3xl font-black text-[#FFCD00]">{s.num}</div>
-              <div className="text-xs text-slate-400 mt-1">{s.label}</div>
+              <div className="text-3xl font-black text-[#00843D]">{s.num}</div>
+              <div className="text-xs text-slate-500 mt-1">{s.label}</div>
             </div>
           ))}
         </div>
