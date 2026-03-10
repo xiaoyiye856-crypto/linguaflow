@@ -10,8 +10,8 @@ const cards = [
     title: '100句地道澳洲口语',
     desc: '对比"你以为的"和"地道表达"，解决生活中的高频尴尬场景。',
     badge: '口语纠错',
-    color: 'from-[#00843D] to-[#00a84f]',
-    accent: '#FFCD00',
+    color: 'from-[#4ade80] to-[#16a34a]',
+    accent: '#fff',
   },
   {
     to: 'AussieDialogues',
@@ -19,7 +19,7 @@ const cards = [
     title: '50个实用 Small Talk 对话',
     desc: '咖啡店、超市、职场闲聊...各种生活情景对话一网打尽。',
     badge: '情景对话',
-    color: 'from-[#eab308] to-[#ca8a04]',
+    color: 'from-[#4ade80] to-[#16a34a]',
     accent: '#fff',
   },
   {
@@ -28,8 +28,8 @@ const cards = [
     title: '100个日常核心短语',
     desc: '不背无用词汇，精选澳洲日常高频短语，辅以地道例句练习。',
     badge: '核心短语',
-    color: 'from-[#FFCD00] to-[#f59e0b]',
-    accent: '#00843D',
+    color: 'from-[#4ade80] to-[#16a34a]',
+    accent: '#fff',
   },
   {
     to: 'Articles',
