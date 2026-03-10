@@ -60,7 +60,7 @@ export default function Home() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 pt-16 pb-10 text-center">
 
         {/* Kangaroo + Stars decorative badge */}
-        <div className="inline-flex items-center gap-2 bg-[#FFCD00]/15 border border-[#FFCD00]/30 text-[#FFCD00] px-5 py-2 rounded-full font-bold text-sm mb-8 backdrop-blur-sm">
+        <div className="inline-flex items-center gap-2 bg-[#00843D]/10 border border-[#00843D]/30 text-[#00843D] px-5 py-2 rounded-full font-bold text-sm mb-8 backdrop-blur-sm">
           🦘 专为澳洲华人打造 · Made for Chinese Australians
         </div>
 
