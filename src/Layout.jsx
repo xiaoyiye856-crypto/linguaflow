@@ -14,7 +14,7 @@ export default function Layout({ children }) {
             <div className="flex items-center gap-8">
               <Link to={createPageUrl('Home')} className="flex items-center gap-2 font-black text-xl tracking-wider">
                 <Globe className="w-6 h-6 text-[#FFCD00]" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-200">G&apos;day English</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-200">AussieLingo</span>
               </Link>
               <div className="hidden md:flex items-center gap-6 text-sm font-medium">
                 <Link to={createPageUrl('Home')} className="flex items-center gap-1.5 hover:text-[#FFCD00] transition-colors">
