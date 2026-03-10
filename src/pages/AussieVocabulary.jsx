@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Volume2, BookOpen, Folder, ArrowLeft } from 'lucide-react';
@@ -19,7 +19,7 @@ export default function AussieVocabulary() {
 
   const playAudio = (text) => { speak(text, 'female'); };
 
-  const groupedVocab = React.useMemo(() => {
+  const groupedVocab = useMemo(() => {
     const groups = {};
     sortedVocab.forEach(item => {
       const cat = item.category || 'Other Expressions';
