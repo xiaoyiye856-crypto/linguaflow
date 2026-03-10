@@ -75,10 +75,10 @@ export default function Home() {
           </span>
         </h1>
 
-        <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-3 leading-relaxed">
+        <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-3 leading-relaxed">
           告别"中式英语"，学最地道的澳洲本土表达
         </p>
-        <p className="text-sm text-slate-500 mb-12">配套音频朗读 · 沉浸式跟读练习 · 文化深度解析</p>
+        <p className="text-sm text-slate-400 mb-12">配套音频朗读 · 沉浸式跟读练习 · 文化深度解析</p>
 
         {/* Stats row */}
         <div className="flex justify-center gap-8 md:gap-16 mb-14">
