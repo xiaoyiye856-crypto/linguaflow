@@ -135,7 +135,7 @@ export default function Home() {
 
       {/* Footer credit */}
       <div className="relative z-10 text-center pb-10">
-        <div className="inline-flex items-center gap-2 text-slate-500 text-sm">
+        <div className="inline-flex items-center gap-2 text-slate-400 text-sm">
           <span>🌏</span>
           <span>© 澳洲阿浩学长</span>
           <span>·</span>
