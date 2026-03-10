@@ -66,11 +66,11 @@ export default function Home() {
 
         {/* Main Title */}
         <h1 className="text-6xl md:text-7xl font-black mb-4 tracking-tight">
-          <span className="text-white">G</span>
-          <span className="text-[#FFCD00]">'</span>
-          <span className="text-white">day</span>
+          <span className="text-slate-900">G</span>
+          <span className="text-[#00843D]">'</span>
+          <span className="text-slate-900">day</span>
           <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFCD00] via-[#fde68a] to-[#00843D]">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00843D] via-[#FFCD00] to-[#c2410c]">
             English
           </span>
         </h1>
