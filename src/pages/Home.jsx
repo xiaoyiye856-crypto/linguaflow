@@ -19,7 +19,7 @@ const cards = [
     title: '50个实用 Small Talk 对话',
     desc: '咖啡店、超市、职场闲聊...各种生活情景对话一网打尽。',
     badge: '情景对话',
-    color: 'from-[#4ade80] to-[#16a34a]',
+    color: 'from-[#38bdf8] to-[#0284c7]',
     accent: '#fff',
   },
   {
@@ -37,7 +37,7 @@ const cards = [
     title: '英语文章—澳洲文化',
     desc: '精选文化必读文章，双语阅读，深入了解澳洲生活方式与文化背景。',
     badge: '文化阅读',
-    color: 'from-[#4ade80] to-[#16a34a]',
+    color: 'from-[#38bdf8] to-[#0284c7]',
     accent: '#fff',
   },
 ];
