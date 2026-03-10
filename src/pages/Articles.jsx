@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { BookOpen, ArrowRight } from 'lucide-react';
 
-// Note: TITLE_ZH is defined in ArticleView, not here
 const TITLE_ZH = {
   'The Art of Greeting in Australia': '澳洲问候的艺术',
   'Understanding Australian Communication Styles': '了解澳洲沟通方式',

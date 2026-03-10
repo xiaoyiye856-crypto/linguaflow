@@ -14,10 +14,7 @@ const HighlightedText = ({ text, notes }) => {
   sortedNotes.forEach(note => {
     const newParts = [];
     parts.forEach(part => {
-      if (part.isHighlight) {
-        newParts.push(part);
-        return;
-      }
+      if (part.isHighlight) { newParts.push(part); return; }
       try {
         const regex = new RegExp(`(${note.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
         const splitText = part.text.split(regex);
@@ -28,16 +25,14 @@ const HighlightedText = ({ text, notes }) => {
             newParts.push({ text: s, isHighlight: false });
           }
         });
-      } catch (e) {
-        newParts.push(part);
-      }
+      } catch (e) { newParts.push(part); }
     });
     parts = newParts;
   });
 
   return (
     <span className="leading-loose">
-      {parts.map((part, i) => 
+      {parts.map((part, i) =>
         part.isHighlight ? (
           <span key={i} className="relative group inline-block">
             <span className="px-1.5 py-0.5 mx-0.5 rounded-md cursor-help border-b-2 bg-amber-100 border-amber-300 text-amber-900">
@@ -69,16 +64,10 @@ export default function AussieDialogues() {
   });
 
   const playAudio = (text, gender) => {
-    if (playingText === text) {
-      cancel();
-      setPlayingText(null);
-      return;
-    }
+    if (playingText === text) { cancel(); setPlayingText(null); return; }
     setPlayingText(text);
     speak(text, gender || 'female', () => setPlayingText(null));
   };
-
-
 
   const sortedDialogues = [...dialogues].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
   
@@ -155,7 +144,6 @@ export default function AussieDialogues() {
                 </div>
                 
                 <AccordionContent className="border-t border-slate-100 bg-slate-50/50">
-
                   {dialogue.cultural_extension && (
                     <div className="bg-[#f0fdf4] border-b border-[#bbf7d0] px-6 py-4 flex gap-3 items-start">
                       <Sparkles className="w-5 h-5 text-[#16a34a] shrink-0 mt-0.5" />
@@ -206,7 +194,6 @@ export default function AussieDialogues() {
                       </div>
                     </div>
                   )}
-
                 </AccordionContent>
               </AccordionItem>
             ))}

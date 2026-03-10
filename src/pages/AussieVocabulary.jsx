@@ -17,9 +17,7 @@ export default function AussieVocabulary() {
 
   const sortedVocab = [...vocab].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
 
-  const playAudio = (text) => {
-    speak(text, 'female');
-  };
+  const playAudio = (text) => { speak(text, 'female'); };
 
   const groupedVocab = React.useMemo(() => {
     const groups = {};
@@ -96,10 +94,10 @@ export default function AussieVocabulary() {
                 {item.example_en && (
                   <div className="bg-[#f0f9ff] p-4 rounded-xl border border-[#e0f2fe] mt-auto">
                     <button onClick={() => playAudio(item.example_en)} className="text-left group w-full">
-                    <p className="text-slate-900 font-medium italic mb-1 group-hover:text-blue-700 transition-colors flex justify-between gap-4">
-                      <span>"{item.example_en}"</span>
-                      <Volume2 className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 shrink-0 mt-0.5" />
-                    </p>
+                      <p className="text-slate-900 font-medium italic mb-1 group-hover:text-blue-700 transition-colors flex justify-between gap-4">
+                        <span>"{item.example_en}"</span>
+                        <Volume2 className="w-4 h-4 text-blue-400 opacity-0 group-hover:opacity-100 shrink-0 mt-0.5" />
+                      </p>
                       <p className="text-sm text-slate-600">{item.example_zh}</p>
                     </button>
                   </div>

@@ -6,16 +6,15 @@ import { Button } from '@/components/ui/button';
 import SentencePractice from '@/components/practice/SentencePractice';
 
 export default function AussieSentences() {
-  const [mode, setMode] = useState(null); // null = choose, 'learn' or 'practice'
+  const [mode, setMode] = useState(null);
 
-  const { data: sentences, isLoading, refetch } = useQuery({
+  const { data: sentences, isLoading } = useQuery({
     queryKey: ['aussie_sentences'],
     queryFn: () => base44.entities.AussieSentence.list(),
     initialData: []
   });
 
   const sortedSentences = [...sentences].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
-
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 animate-in fade-in duration-500">
@@ -24,11 +23,8 @@ export default function AussieSentences() {
           🇦🇺 100句地道澳洲口语
         </h1>
         <p className="text-lg opacity-95 font-medium">对比"你以为的"和"地道表达"，解决生活中的高频尴尬场景</p>
-        
-
       </div>
 
-      {/* Mode selector */}
       {!mode && !isLoading && (
         <div className="bg-white rounded-b-3xl shadow-xl overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">
@@ -60,7 +56,6 @@ export default function AussieSentences() {
         </div>
       )}
 
-      {/* Back button */}
       {mode && (
         <div className="bg-white border-b border-slate-100 px-6 py-3 flex items-center gap-3">
           <button onClick={() => setMode(null)} className="text-sm text-slate-500 hover:text-slate-800 font-medium flex items-center gap-1">
@@ -73,7 +68,6 @@ export default function AussieSentences() {
         </div>
       )}
 
-      {/* Learn mode */}
       {mode === 'learn' && (
         <div className="bg-white shadow-xl rounded-b-3xl overflow-hidden">
           <div className="grid grid-cols-12 bg-[#00843D] text-white font-bold p-4 text-center">
@@ -127,7 +121,6 @@ export default function AussieSentences() {
         </div>
       )}
 
-      {/* Practice mode */}
       {mode === 'practice' && !isLoading && (
         <div className="pt-4 pb-10">
           <SentencePractice sentences={sortedSentences} />
