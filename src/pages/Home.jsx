@@ -52,8 +52,8 @@ export default function Home() {
         <div className="absolute top-10 right-10 w-64 h-64 bg-[#FFCD00]/20 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-10 w-96 h-96 bg-[#00843D]/10 rounded-full blur-3xl" />
         {/* Decorative dots pattern */}
-        <div className="absolute top-0 right-0 w-1/2 h-full opacity-5"
-          style={{backgroundImage: 'radial-gradient(circle, #FFCD00 1px, transparent 1px)', backgroundSize: '30px 30px'}} />
+        <div className="absolute top-0 right-0 w-1/2 h-full opacity-20"
+          style={{backgroundImage: 'radial-gradient(circle, #00843D 1px, transparent 1px)', backgroundSize: '30px 30px'}} />
       </div>
 
       {/* Hero Section */}
