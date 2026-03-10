@@ -72,7 +72,7 @@ export default function Home() {
           <span className="text-[#00843D]">'</span>
           <span className="text-slate-900">day</span>
           <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00843D] via-[#FFCD00] to-[#c2410c]">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00843D] via-[#16a34a] to-[#FFCD00]">
             English
           </span>
         </h1>
