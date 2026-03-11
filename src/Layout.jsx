@@ -2,9 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Globe, Home, Quote, MessageCircle, BookOpen } from 'lucide-react';
+import AccessGate from './components/AccessGate';
 
 export default function Layout({ children }) {
   return (
+    <AccessGate>
     <div className="min-h-screen bg-slate-50 font-sans">
       <nav className="bg-[#1e293b] text-white shadow-md">
         <div className="max-w-6xl mx-auto px-4">
