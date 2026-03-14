@@ -22,7 +22,7 @@ const DIALOGUES = [
     ],
     keyphrases: [
       { en: "Lovely day today, isn't it?", zh: "今天天气真好，不是吗？（打招呼的常用开场白）" },
-      { en: "hit 38 degrees", zh: "气温达到38度（澳洲用"hit"表示温度"达到"）" },
+      { en: "hit 38 degrees", zh: '气温达到38度（澳洲用"hit"表示温度"达到"）' },
       { en: "scorching", zh: "酷热的、灼热的（比 hot 更强烈）" },
       { en: "Keep hydrated", zh: "保持补水、多喝水（澳洲人的口头禅）" },
       { en: "Stay indoors", zh: "待在室内（热天常见建议）" },
@@ -118,7 +118,7 @@ const DIALOGUES = [
       { en: "things have quieted down", zh: "事情平静下来了" },
     ],
     aussiePhrases: [
-      { en: "flat out", zh: "忙得不可开交（澳洲最常用的"忙"的表达）" },
+      { en: "flat out", zh: '忙得不可开交（澳洲最常用的"忙"的表达）' },
       { en: "Thank goodness for that!", zh: "太感谢了！谢天谢地！" },
       { en: "That's just work, isn't it", zh: "这就是工作嘛（表示无奈接受）" },
     ],
